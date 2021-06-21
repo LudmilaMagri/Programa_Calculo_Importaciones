@@ -59,17 +59,17 @@ int art_delete(Articulos* this)
 	}
 	return retorno;
 }
-
 int art_setCodigo(Articulos* this,char* codigo)
 {
 	int retorno = -1;
 	if(this != NULL && codigo != NULL && isValidCodigo(codigo) )
 	{
-		strcpy(this->codigo,codigo);
+		strcpy(this->codigo, codigo);
 		retorno = 0;
 	}
 	return retorno;
 }
+
 char* art_getCodigo(Articulos* this,int* flagError)
 {
 	*flagError = -1;
@@ -435,7 +435,7 @@ int art_editArticulo(Dictionary* pArrayArticulos, char* pFileArt)
 	int ret = -1;
 	Articulos* pA;
 	char idFindArt[100];
-	char codigo[10000];
+	char codigo[COD_LEN];
 	char descripcion[DESC_LEN];
 	char paisFabricacion[PAIS_LEN];
 	char nombre[NOM_LEN];
@@ -450,7 +450,7 @@ int art_editArticulo(Dictionary* pArrayArticulos, char* pFileArt)
 
 			if(pA!=NULL)
 			{
-				if (utn_getDescripcion(codigo, 10000, "\nIngrese el codigo\n", "\nError\n", 3)==0 &&
+				if (utn_getDescripcion(codigo, COD_LEN, "\nIngrese el codigo\n", "\nError\n", 3)==0 &&
 					utn_getNombre(nombre, NOM_LEN, "\nIngrese el nombre del articulo\n", "\nError\n", 3)==0 &&
 					utn_getDescripcion(descripcion, DESCRIP_LEN, "\nIngrese la descripcion\n", "\nError\n", 3)==0 &&
 					utn_getTexto(paisFabricacion, PAIS_LEN, "\nIngrese el pais de fabricacion\n", "\nError\n", 3)==0 &&
@@ -464,9 +464,9 @@ int art_editArticulo(Dictionary* pArrayArticulos, char* pFileArt)
 							!art_setPaisFabricacion(pA, paisFabricacion)&& !art_setValorFob(pA, valorFob)&& !art_setPeso(pA, peso)&&
 							!art_setAncho(pA, ancho)&& !art_setAlto(pA, alto) && !art_setProfundidad(pA, profundidad))
 					{
-						printf("ENTRE AL FIN LOCO");
 						printf("\nCODIGO: %s\n", art_getCodigo(pA, &flag));
 						printf("\nNOMBRE: %s", art_getNombre(pA, &flag));
+						controller_saveArticulosText(pFileArt, pArrayArticulos);
 					}
 				}
 			}

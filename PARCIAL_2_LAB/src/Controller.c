@@ -104,13 +104,13 @@ int controller_ABM_Articulos(Dictionary* pArt, Dictionary* pPosAranc,char* pFile
 		do
 		{
 			if(!utn_getNumeroInt(&opcion,
-					"\n\t---------------------------------------------------------------"
+					"\n\t-------------------------------------------------"
 					"\n\t\t***** MENU ARTICULOS *****							\n"
 					"\n\t*	1. Alta de un articulo.\t\t\t*"
-					"\n\t*	2. Modificar un articulo.\t\t\t*"
+					"\n\t*	2. Modificar un articulo.\t\t*"
 					"\n\t*	3. Baja de un articulo.\t\t\t*"
 					"\n\t*	0. Salir.\t\t\t\t*"
-					"\n\t---------------------------------------------------------------\n\nIngrese opcion: ",
+					"\n\t-------------------------------------------------\n\nIngrese opcion: ",
 							"Opcion incorrecta", 0, 6, 3))
 			{
 				switch(opcion)
@@ -130,7 +130,7 @@ int controller_ABM_Articulos(Dictionary* pArt, Dictionary* pPosAranc,char* pFile
 							art_editArticulo(pArt, pFileArt);
 						break;
 					case 3:
-						art_deleteArticulo(pArt, pFileArt);
+							art_deleteArticulo(pArt, pFileArt);
 						break;
 				}
 			}
@@ -156,7 +156,7 @@ int controller_ABM_PosicionArancelaria(Dictionary* pPosAranc, char* pFile)
 					"\n\t*	1. Alta de una posicion arancelaria.\t\t\t*"
 					"\n\t*	2. Modificar una posicion arancelaria.\t\t\t*"
 					"\n\t*	3. Eliminar una posicion arancelaria.\t\t\t*"
-					"\n\t*	0. Salir.\t\t\t\t*"
+					"\n\t*	0. Salir.\t\t\t\t\t\t*"
 					"\n\t---------------------------------------------------------------\n\nIngrese opcion: ",
 							"Opcion incorrecta", 0, 6, 3))
 			{
@@ -233,6 +233,18 @@ int controller_imprimirListaArticulos(Dictionary* articulos)
 	}
 	return ret;
 }
+void funcionImprimirProlijoPosAranc()
+{
+	char idPosAranc[20] = "ID P.A";
+	char nomenclador[20] = "NOMENCLADOR";
+	char seguro[20] = "SEGURO (%)";
+	char import[20] = "IMPORT (%)";
+	char tasaEst[20] = "TASA ESTAD (%)";
+	char tipoLic[20] = "TIPO LIC";
+	printf("\n|%5s\t|	%-10s	|%-10s|\t%-5s\t|%-5s\t|%-10s\t|\n", idPosAranc, nomenclador, seguro, import, tasaEst, tipoLic);
+	printf("|-----------------------------------------------------------------------------------------------|\n");
+
+}
 int controller_imprimirListaPosAranc(Dictionary* posicionAranc)
 {
 	int ret=-1;
@@ -248,15 +260,13 @@ int controller_imprimirListaPosAranc(Dictionary* posicionAranc)
 		pL = dict_getValues(posicionAranc); //obtengo la dir de memo de la ll
 		if(pL!=NULL)
 		{
-			printf("\n|ID P.A\t|    NOMENCLADOR\t|  SEGURO\t|  IMPORTACION\t|  TASA ESTADISTICA\t|  TIPO LIC\t|\n");
-			printf("|-------------------------------------------------------------------------------------------------------|\n");
+			funcionImprimirProlijoPosAranc();
 			for (i=0; i<ll_len(pL); i++)
 			{
-
 				pPA =(PosArancelaria*)ll_get(pL, i); //elementos que estan en el ll que estaban en el diccionario
 				if(pPA!=NULL)
 				{
-					printf("|  %d\t|   %s\t|  %.2f\t\t|  %.2f\t|  %.2f\t\t\t| %s  \n", pos_getIdPosArancelaria(pPA, &flagError), pos_getNomenclatura(pPA, &flagError),
+					printf("|%5d\t|\t%s\t|%-10.3f|\t%-5.3f\t\t|%5.3f\t\t| %s  \n", pos_getIdPosArancelaria(pPA, &flagError), pos_getNomenclatura(pPA, &flagError),
 																				pos_getSeguro(pPA, &flagError), pos_getImportacion(pPA, &flagError),
 																				pos_getTasaEstadistica(pPA, &flagError), ESTADO[pos_getTipoLicencia(pPA, &flagError)]);
 				}

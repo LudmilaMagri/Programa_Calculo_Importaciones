@@ -40,19 +40,17 @@ int main(void) {
 	do{
 		if (!utn_getNumeroInt(&option,
 							"\n\n"
-							"\n\t---------------------------------------------------------------------------------"
-							"\n\t\t		***** MENU *****							\n"
-							"\n\t*	1. Menu posiciones arancelarias\t*"
-							"\n\t*	2. Menu articulos\t*"
-							"\n\t*	3. Listar Posiciones Arancelarias\t\t\t\t\t\t\t*"
-							"\n\t*	4. Listar Articulos\t\t\t\t\t\t*"
-							"\n\t*	5. Modificar datos del transporte Maritimo\t\t\t\t\t\t\t*"
-							"\n\t*	6. Modificar datos del transporte Aereo\t\t\t\t\t\t\t*"
-							"\n\t*	7. Listar costo argentino de ambos transportes\t\t\t\t\t\t\t*"
-							"\n\t*	8. Guardar los datos de los empleados en el archivo (modo texto).\t*"
-							"\n\t*	9. Guardar los datos de los empleados en el archivo (modo binario).\t*"
-							"\n\t*	10. Salir\t\t\t\t\t\t\t\t*"
-							"\n\t--------------------------------------------------------------------------------\n\nIngrese Opcion: ",
+							"\n\t----------------------------------------------------------"
+							"\n\t\t\t***** MENU *****							\n"
+							"\n\t*	1. Menu posiciones arancelarias\t\t\t*"
+							"\n\t*	2. Menu articulos\t\t\t\t*"
+							"\n\t*	3. Listar Posiciones Arancelarias\t\t*"
+							"\n\t*	4. Listar Articulos\t\t\t\t*"
+							"\n\t*	5. Modificar datos del transporte Maritimo\t*"
+							"\n\t*	6. Modificar datos del transporte Aereo\t\t*"
+							"\n\t*	7. Listar costo argentino de ambos transportes\t*"
+							"\n\t*	10. Salir\t\t\t\t\t*"
+							"\n\t-----------------------------------------------------------\n\nIngrese Opcion: ",
 							"\nError opcion invalida", 0, 11, 2))
 		{
 			switch(option)

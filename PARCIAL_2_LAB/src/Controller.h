@@ -24,6 +24,7 @@ int controller_savePosAraText(char* pFile, Dictionary* posicionAranc);
 int controller_saveArticulosText(char* pFile, Dictionary* articulos);
 
 void funcionImprimirProlijoArticulos();
+void funcionImprimirProlijoPosAranc();
 void funcionImprimirProlijoCostoArgentino();
 
 #include "Maritimo.h"
