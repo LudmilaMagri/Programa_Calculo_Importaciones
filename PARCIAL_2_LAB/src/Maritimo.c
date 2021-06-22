@@ -41,10 +41,10 @@ int mar_delete(Maritimo* this)
 	return retorno;
 }
 
-int mar_setVolumen(Maritimo* this, float volumen)
+float mar_setVolumen(Maritimo* this, float volumen)
 {
-	int retorno = -1;
-	if(this != NULL && isValidVolumen(volumen) )
+	float retorno = -1;
+	if(this != NULL)
 	{
 		this->volumen = volumen;
 		retorno = 0;
@@ -55,7 +55,7 @@ int mar_setVolumen(Maritimo* this, float volumen)
 float mar_getVolumen(Maritimo* this,int* flagError)
 {
 	*flagError = -1;
-	int aux = -1;
+	float aux = -1;
 	if(this != NULL && flagError != NULL )
 	{
 		aux=this->volumen;
@@ -65,11 +65,16 @@ float mar_getVolumen(Maritimo* this,int* flagError)
 }
 int isValidVolumen(float volumen)
 {
-	return 1;
+	int retorno = 1;
+	if (volumen >'9' || volumen <'0')
+	{
+		retorno = 0;
+	}
+	return retorno;
 }
-int mar_setPrecio(Maritimo* this, float precio)
+float mar_setPrecio(Maritimo* this, float precio)
 {
-	int retorno = -1;
+	float retorno = -1;
 	if(this != NULL )
 	{
 		this->precio = precio;
@@ -80,7 +85,7 @@ int mar_setPrecio(Maritimo* this, float precio)
 float mar_getPrecio(Maritimo* this,int* flagError)
 {
 	*flagError = -1;
-	int aux = -1;
+	float aux = -1;
 	if(this != NULL && flagError != NULL )
 	{
 		aux=this->precio;
@@ -89,9 +94,9 @@ float mar_getPrecio(Maritimo* this,int* flagError)
 	return aux;
 }
 
-int mar_setVolumen2(Maritimo this, float volumen)
+float mar_setVolumen2(Maritimo this, float volumen)
 {
-	int retorno = -1;
+	float retorno = -1;
 	if( isValidVolumen(volumen) )
 	{
 		this.volumen = volumen;
@@ -103,7 +108,7 @@ int mar_setVolumen2(Maritimo this, float volumen)
 float mar_getVolumen2(Maritimo this,int* flagError)
 {
 	*flagError = -1;
-	int aux = -1;
+	float aux = -1;
 	if(flagError != NULL )
 	{
 		aux=this.volumen;
@@ -115,9 +120,9 @@ int isValidVolumen2(float volumen)
 {
 	return 1;
 }
-int mar_setPrecio2(Maritimo this, float precio)
+float mar_setPrecio2(Maritimo this, float precio)
 {
-	int retorno = -1;
+	float retorno = -1;
 
 		this.precio = precio;
 		retorno = 0;
@@ -127,7 +132,7 @@ int mar_setPrecio2(Maritimo this, float precio)
 float mar_getPrecio2(Maritimo this,int* flagError)
 {
 	*flagError = -1;
-	int aux = -1;
+	float aux = -1;
 	if(flagError != NULL )
 	{
 		aux=this.precio;
@@ -138,7 +143,12 @@ float mar_getPrecio2(Maritimo this,int* flagError)
 
 int isValidPrecio2(float precio)
 {
-	return 1;
+	int retorno = 1;
+	if (precio >'9' || precio <'0')
+	{
+		retorno = 0;
+	}
+	return retorno;
 }
 
 /*float calcularCostoMaritimo (Articulo* pArt, Posicion* pPosicion, Transporte* pT)
@@ -195,6 +205,7 @@ float calcularTotalTransporteMar(Articulos* pArticulos, Maritimo* pMar)
 		volumenContenedor = mar_getVolumen(pMar, &flag);
 		precioFinal = (volumenCalculado * precio)/volumenContenedor;
 		ret = precioFinal;
+
 	}
 	return ret;
 }
@@ -211,15 +222,15 @@ float calcularTotalTransporteMar(Articulos* pArticulos, Maritimo* pMar)
 float calcularBaseImponibleMaritimo(Articulos* pArt, Maritimo* pMar, PosArancelaria* pPosAranc)
 {
 	float ret =-1;
-	float seguroPorcTotal, transportePorcTotal, precioFob, totalBI;
+	float seguroPorcTotal, transporteTotal, precioFob, totalBI;
 	int flag;
 	//BI = FOB+seguro+trans
 	if (pArt!=NULL && pMar!=NULL && pPosAranc!=NULL)
 	{
 		precioFob = art_getValorFob(pArt, &flag);
 		seguroPorcTotal = calcularPorcentajeSeguro(pPosAranc, pArt);
-		transportePorcTotal = calcularPorcentajeTransporteMaritimo(pArt, pMar);
-		totalBI = precioFob+ seguroPorcTotal + transportePorcTotal;
+		transporteTotal = calcularTotalTransporteMar(pArt, pMar);
+		totalBI = precioFob+ seguroPorcTotal + transporteTotal;
 		ret = totalBI;
 	}
 	return ret;
@@ -234,7 +245,7 @@ float calcularBaseImponibleMaritimo(Articulos* pArt, Maritimo* pMar, PosArancela
  */
 float calcularPorcentajeSeguro (PosArancelaria* pPosAranc, Articulos* pArt)
 {
-	int ret = -1;
+	float ret = -1;
 	float precioFob, porcentajeSeguro, seguroTotal;
 	int flag;
 	if (pPosAranc!=NULL && pArt!=NULL)
@@ -336,7 +347,6 @@ float calcularPorcTasaEstadistica (PosArancelaria* pPosAranc, Articulos* pArt, M
 		baseImponible = calcularBaseImponibleMaritimo(pArt, pMar, pPosAranc);
 		tasaEstadistica = pos_getTasaEstadistica(pPosAranc, &flag);
 		porcTasaEstTotal = (tasaEstadistica * baseImponible)/100;
-
 	}
 	return porcTasaEstTotal;
 }

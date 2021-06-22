@@ -43,6 +43,7 @@ int parser_ArticulosFromText (FILE* pFile, Dictionary* articulos)
 				if(esNumerica(idAux, 5000)==1)
 				{
 					pA= art_newParam(codigo, descripcion, paisFabricacion, nombre, atof(valorFob), atof(peso), atof(ancho), atof(alto), atof(profundidad), atoi(idAux), atoi(idPosAranc));
+
 					if(pA != NULL)
 					{
 						dict_insert(articulos, idAux, pA);

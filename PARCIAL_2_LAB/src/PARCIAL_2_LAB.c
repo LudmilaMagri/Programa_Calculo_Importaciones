@@ -50,9 +50,11 @@ int main(void) {
 							"\n\t*	8. Menu de ordenamiento\t\t\t\t*"
 							"\n\t*	9. Imprimir lista filtrada con algun criterio\t*"
 							"\n\t*	10. Costo argentino maritimo mas alto\t\t*"
+							"\n\t*	11. Buscar por nomenclatura\t*"
+							"\n\t*	12. Articulos con 50% descuento en precio FOB\t*"
 							"\n\t*	0. Salir\t\t\t\t\t*"
 							"\n\t-----------------------------------------------------------\n\nIngrese Opcion: ",
-							"\nError opcion invalida", 0, 11, 2))
+							"\nError opcion invalida", 0, 15, 2))
 		{
 			switch(option)
 			{
@@ -86,6 +88,13 @@ int main(void) {
 				case 10:
 					controller_buscarMayorCostoArgMaritimo(articulos, posicionAranc, &transMar);
 					break;
+				case 11:
+					controller_buscarNomenclatura(posicionAranc, articulos);
+					break;
+				case 12:
+					controller_imprimirListaFiltradaArticulos(articulos);
+					break;
+
 			}
 		}
 	}while(option != 0);

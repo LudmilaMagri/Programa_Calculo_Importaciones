@@ -50,14 +50,20 @@ int controller_aer_editTransporteAereo(Aereo* pAereo, char* pFile);
 
 int controller_imprimirListaFiltradaPosAran(Dictionary* posicionAranc);
 int controller_imprimirListaFiltradaArticulos(Dictionary* pArticulos);
-int controller_aplicarListaFiltrada(Dictionary* pArrayListPosAranc);
+int controller_aplicarListaFiltrada(Dictionary* pArrayListPosAranc, Dictionary* pArticulos);
+
 int funcionCriterioFiltrarLic(void* pGenerico);
+int funcionCriterioValorFob(void* pGenerico);
+
 
 float controller_buscarMayor (Dictionary* pArt);
 float controller_buscarMayorCostoArgMaritimo(Dictionary* pArt, Dictionary* pPosAranc, Maritimo* pTransMar);
 
+float aplicarDescuento (LinkedList* listaFiltrada, Dictionary* pArt);
+int aplicarDescuentoEnValorFob (LinkedList* listaFiltrada);
 
 
+int controller_buscarNomenclatura(Dictionary* pPosAranc, Dictionary* pArt);
 
 
 #endif /* CONTROLLER_H_ */

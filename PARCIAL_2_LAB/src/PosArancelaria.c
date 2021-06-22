@@ -75,9 +75,9 @@ int isValidNomenclatura(char* nomenclatura)
 {
 	return 1;
 }
-int pos_setSeguro(PosArancelaria* this, float seguro)
+float pos_setSeguro(PosArancelaria* this, float seguro)
 {
-	int retorno = -1;
+	float retorno = -1;
 	if(this != NULL && isValidSeguro(seguro) )
 	{
 		this->seguro = seguro;
@@ -100,9 +100,9 @@ int isValidSeguro(float seguro)
 {
 	return 1;
 }
-int pos_setImportacion(PosArancelaria* this, float importacion)
+float pos_setImportacion(PosArancelaria* this, float importacion)
 {
-	int retorno = -1;
+	float retorno = -1;
 	if(this != NULL && isValidImportacion(importacion) )
 	{
 		this->importacion = importacion;
@@ -125,9 +125,9 @@ int isValidImportacion(float importacion)
 {
 	return 1;
 }
-int pos_setTasaEstadistica(PosArancelaria* this, float tasaEstadistica)
+float pos_setTasaEstadistica(PosArancelaria* this, float tasaEstadistica)
 {
-	int retorno = -1;
+	float retorno = -1;
 	if(this != NULL && isValidTasaEstadistica(tasaEstadistica) )
 	{
 		this->tasaEstadistica = tasaEstadistica;

@@ -31,15 +31,15 @@ int pos_setNomenclatura(PosArancelaria* this,char* nomenclaturaAranc);
 char* pos_getNomenclatura(PosArancelaria* this,int* flagError);
 int isValidNomenclatura(char*);
 
-int pos_setSeguro(PosArancelaria* this, float seguro);
+float pos_setSeguro(PosArancelaria* this, float seguro);
 float pos_getSeguro(PosArancelaria* this,int* flagError);
 int isValidSeguro(float);
 
-int pos_setImportacion(PosArancelaria* this, float importacion);
+float pos_setImportacion(PosArancelaria* this, float importacion);
 float pos_getImportacion(PosArancelaria* this,int* flagError);
 int isValidImportacion(float);
 
-int pos_setTasaEstadistica(PosArancelaria* this, float tasaEstadistica);
+float pos_setTasaEstadistica(PosArancelaria* this, float tasaEstadistica);
 float pos_getTasaEstadistica(PosArancelaria* this,int* flagError);
 int isValidTasaEstadistica(float);
 

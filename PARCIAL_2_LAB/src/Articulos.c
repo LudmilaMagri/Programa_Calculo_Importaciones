@@ -62,7 +62,7 @@ int art_delete(Articulos* this)
 int art_setCodigo(Articulos* this,char* codigo)
 {
 	int retorno = -1;
-	if(this != NULL && codigo != NULL && isValidCodigo(codigo) )
+	if(this != NULL && codigo != NULL && isValidCodigo(codigo) ==1)
 	{
 		strcpy(this->codigo, codigo);
 		retorno = 0;
@@ -173,9 +173,9 @@ int isValidNombre(char* nombre)
 	return 1;
 }
 
-int art_setValorFob(Articulos* this, float valorFob)
+float art_setValorFob(Articulos* this, float valorFob)
 {
-	int retorno = -1;
+	float retorno = -1;
 	if(this != NULL && isValidValorFob(valorFob) )
 	{
 		this->valorFob = valorFob;
@@ -187,7 +187,7 @@ int art_setValorFob(Articulos* this, float valorFob)
 float art_getValorFob(Articulos* this,int* flagError)
 {
 	*flagError = -1;
-	int auxValorFob = -1;
+	float auxValorFob = -1;
 	if(this != NULL && flagError != NULL )
 	{
 		auxValorFob=this->valorFob;
@@ -199,9 +199,9 @@ int isValidValorFob(float valorFob)
 {
 	return 1;
 }
-int art_setPeso(Articulos* this, float peso)
+float art_setPeso(Articulos* this, float peso)
 {
-	int retorno = -1;
+	float retorno = -1;
 	if(this != NULL && isValidPeso(peso) )
 	{
 		this->peso = peso;
@@ -212,7 +212,7 @@ int art_setPeso(Articulos* this, float peso)
 float art_getPeso(Articulos* this,int* flagError)
 {
 	*flagError = -1;
-	int auxPeso = -1;
+	float auxPeso = -1;
 	if(this != NULL && flagError != NULL )
 	{
 		auxPeso=this->peso;
@@ -224,9 +224,9 @@ int isValidPeso(float peso)
 {
 	return 1;
 }
-int art_setAncho(Articulos* this, float ancho)
+float art_setAncho(Articulos* this, float ancho)
 {
-	int retorno = -1;
+	float retorno = -1;
 	if(this != NULL && isValidAncho(ancho) )
 	{
 		this->ancho = ancho;
@@ -237,7 +237,7 @@ int art_setAncho(Articulos* this, float ancho)
 float art_getAncho(Articulos* this,int* flagError)
 {
 	*flagError = -1;
-	int auxAncho = -1;
+	float auxAncho = -1;
 	if(this != NULL && flagError != NULL )
 	{
 		auxAncho=this->ancho;
@@ -249,9 +249,9 @@ int isValidAncho(float ancho)
 {
 	return 1;
 }
-int art_setAlto(Articulos* this, float alto)
+float art_setAlto(Articulos* this, float alto)
 {
-	int retorno = -1;
+	float retorno = -1;
 	if(this != NULL && isValidAlto(alto) )
 	{
 		this->alto = alto;
@@ -262,7 +262,7 @@ int art_setAlto(Articulos* this, float alto)
 float art_getAlto(Articulos* this,int* flagError)
 {
 	*flagError = -1;
-	int auxAlto = -1;
+	float auxAlto = -1;
 	if(this != NULL && flagError != NULL )
 	{
 		auxAlto=this->alto;
@@ -274,9 +274,9 @@ int isValidAlto(float alto)
 {
 	return 1;
 }
-int art_setProfundidad(Articulos* this, float profundidad)
+float art_setProfundidad(Articulos* this, float profundidad)
 {
-	int retorno = -1;
+	float retorno = -1;
 	if(this != NULL && isValidProfundidad(profundidad) )
 	{
 		this->profundidad = profundidad;

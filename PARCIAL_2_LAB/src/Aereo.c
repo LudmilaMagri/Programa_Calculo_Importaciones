@@ -39,9 +39,9 @@ int aer_delete(Aereo* this)
 	return retorno;
 }
 
-int aer_setConstVolumen(Aereo* this, float constVolumetrica)
+float aer_setConstVolumen(Aereo* this, float constVolumetrica)
 {
-	int retorno = -1;
+	float retorno = -1;
 	if(this != NULL && isValidConstVolumen(constVolumetrica) )
 	{
 		this->constVolumetrica = constVolumetrica;
@@ -52,7 +52,7 @@ int aer_setConstVolumen(Aereo* this, float constVolumetrica)
 float aer_getConstVolumen(Aereo* this,int* flagError)
 {
 	*flagError = -1;
-	int aux = -1;
+	float aux = -1;
 	if(this != NULL && flagError != NULL )
 	{
 		aux=this->constVolumetrica;
@@ -64,10 +64,10 @@ int isValidConstVolumen(float constVolumen)
 {
 	return 1;
 }
-int aer_setPrecioPorKg(Aereo* this, float precioPorKg)
+float aer_setPrecioPorKg(Aereo* this, float precioPorKg)
 {
-	int retorno = -1;
-	if(this != NULL && isValidPrecioPorKg(precioPorKg) )
+	float retorno = -1;
+	if(this != NULL && isValidPrecioPorKg(precioPorKg)==1)
 	{
 		this->precioPorKg = precioPorKg;
 		retorno = 0;
@@ -77,7 +77,7 @@ int aer_setPrecioPorKg(Aereo* this, float precioPorKg)
 float aer_getPrecioPorKg(Aereo* this,int* flagError)
 {
 	*flagError = -1;
-	int aux = -1;
+	float aux = -1;
 	if(this != NULL && flagError != NULL )
 	{
 		aux=this->precioPorKg;
@@ -232,14 +232,14 @@ float calcularTotalTransporteAereo(Articulos* pArticulos, Aereo* pAereo)
  */
 float calcularBaseImponibleAereo(PosArancelaria* pPosAranc,Articulos* pArt, Aereo* pAereo)
 {
-	int ret = -1;
+	float ret = -1;
 	float seguroPorcTotal, transportePorcTotal, precioFob, baseImponibleTotal;
 	int flag;
 	if(pArt!=NULL && pAereo!=NULL && pPosAranc!=NULL)
 	{
 		precioFob = art_getValorFob(pArt, &flag);
 		seguroPorcTotal = calcularPorcentajeSeguro(pPosAranc, pArt);
-		transportePorcTotal = calcularPorcentajeTransporteAereo(pArt, pAereo);
+		transportePorcTotal = calcularTotalTransporteAereo(pArt, pAereo);
 		baseImponibleTotal = precioFob + seguroPorcTotal + transportePorcTotal;
 		ret = baseImponibleTotal;
 	}
@@ -311,6 +311,7 @@ float calcularPorcImportacionAereo (PosArancelaria* pPosAranc, Articulos* pArt, 
 		importacion = pos_getImportacion(pPosAranc, &flag);
 		porcImporTotal = (importacion*baseImponible)/100;
 		ret = porcImporTotal;
+
 	}
 	return ret;
 }
@@ -334,6 +335,7 @@ float calcularPorcTasaEstadisticaAereo(PosArancelaria* pPosAranc, Articulos* pAr
 		tasaEstadistica = pos_getTasaEstadistica(pPosAranc, &flag);
 		porcTasaEstTotal = (tasaEstadistica*baseImponible)/100;
 		ret = porcTasaEstTotal;
+
 	}
 	return ret;
 }

@@ -49,23 +49,23 @@ char* art_getNombre(Articulos* this,int* flagError);
 int art_getNombre2(Articulos* this, char* nombre);
 int isValidNombre(char*);
 
-int art_setValorFob(Articulos* this, float valorFob);
+float art_setValorFob(Articulos* this, float valorFob);
 float art_getValorFob(Articulos* this,int* flagError);
 int isValidValorFob(float);
 
-int art_setPeso(Articulos* this, float peso);
+float art_setPeso(Articulos* this, float peso);
 float art_getPeso(Articulos* this,int* flagError);
 int isValidPeso(float);
 
-int art_setAncho(Articulos* this, float ancho);
+float art_setAncho(Articulos* this, float ancho);
 float art_getAncho(Articulos* this,int* flagError);
 int isValidAncho(float);
 
-int art_setAlto(Articulos* this, float alto);
+float art_setAlto(Articulos* this, float alto);
 float art_getAlto(Articulos* this,int* flagError);
 int isValidAlto(float);
 
-int art_setProfundidad(Articulos* this, float profundidad);
+float art_setProfundidad(Articulos* this, float profundidad);
 float art_getProfundidad(Articulos* this,int* flagError);
 int isValidProfundidad(float);
 

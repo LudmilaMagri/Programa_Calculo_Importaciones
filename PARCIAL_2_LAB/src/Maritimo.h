@@ -23,19 +23,19 @@ int mar_newParam(Maritimo* pMar, float volumen, float precio);
 
 int mar_delete(Maritimo* this);
 
-int mar_setVolumen(Maritimo* this, float volumen);
+float mar_setVolumen(Maritimo* this, float volumen);
 float mar_getVolumen(Maritimo* this,int* flagError);
 int isValidVolumen(float);
 
-int mar_setPrecio(Maritimo* this, float precio);
+float mar_setPrecio(Maritimo* this, float precio);
 float mar_getPrecio(Maritimo* this,int* flagError);
 int isValidPrecio(float);
 
-int mar_setVolumen2(Maritimo this, float volumen);
+float mar_setVolumen2(Maritimo this, float volumen);
 float mar_getVolumen2(Maritimo this,int* flagError);
 int isValidVolumen2(float);
 
-int mar_setPrecio2(Maritimo this, float precio);
+float mar_setPrecio2(Maritimo this, float precio);
 float mar_getPrecio2(Maritimo this,int* flagError);
 int isValidPrecio2(float);
 

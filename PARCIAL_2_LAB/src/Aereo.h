@@ -18,11 +18,11 @@ typedef struct
 int aer_newParam(Aereo* pAereo, float constVolumetrica, float precioPorKg);
 int aer_delete(Aereo* this);
 
-int aer_setConstVolumen(Aereo* this, float constVolumetrica);
+float aer_setConstVolumen(Aereo* this, float constVolumetrica);
 float aer_getConstVolumen(Aereo* this,int* flagError);
 int isValidConstVolumen(float);
 
-int aer_setPrecioPorKg(Aereo* this, float precioPorKg);
+float aer_setPrecioPorKg(Aereo* this, float precioPorKg);
 float aer_getPrecioPorKg(Aereo* this,int* flagError);
 int isValidPrecioPorKg(float);
 
