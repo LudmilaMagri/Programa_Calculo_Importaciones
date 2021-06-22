@@ -149,12 +149,17 @@ int isValidPrecio2(float precio)
 
 
 
+//-----------------------------------------------------------------------------------------
 
- //---------------------------CALCULO M3 Y TOTAL TRANSPORTE----------------------------------
-
-
+/** \brief Calcula el volumen en metro cubico (m3)
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ * \return float ret (-1) si el puntero es NULL o el volumen obtenido
+ *
+ */
 float calcularMetroCubico(Articulos* pArticulos)
 {
+	float ret =-1;
 	float ancho, alto, prof;
 	int flag;
 	float volumen;
@@ -165,13 +170,22 @@ float calcularMetroCubico(Articulos* pArticulos)
 		alto = art_getAlto(pArticulos, &flag);
 		prof = art_getProfundidad(pArticulos, &flag);
 		volumen = (ancho/100) * (alto/100) * (prof/100);
+		ret = volumen;
 	}
-	return volumen;
+	return ret;
 }
 
-
+/** \brief Calcula el total del transporte maritimo
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ *  \param pMar Maritimo* Puntero al tipo de dato Maritimo
+ *
+ * \return float ret (-1) si el puntero es NULL o el precio final obtenido
+ *
+ */
 float calcularTotalTransporteMar(Articulos* pArticulos, Maritimo* pMar)
 {
+	float ret =-1;
 	float volumenCalculado, volumenContenedor, precioFinal, precio;
 	int flag;
 	if(pArticulos!=NULL && pMar != NULL)
@@ -180,63 +194,47 @@ float calcularTotalTransporteMar(Articulos* pArticulos, Maritimo* pMar)
 		precio = mar_getPrecio(pMar, &flag);
 		volumenContenedor = mar_getVolumen(pMar, &flag);
 		precioFinal = (volumenCalculado * precio)/volumenContenedor;
-	}
-	return precioFinal;
-}
-
-
-/*
-float calcularTransporteMaritimo (Dictionary* articulos, Maritimo* pTransMar)
-{
-	int ret = -1;
-	float precio;
-	Articulos* pA;
-	LinkedList* pL;
-	//int idPosAran;
-
-	if (articulos!=NULL)
-	{
-		pL = dict_getValues(articulos);
-		if(pL!=NULL)
-		{
-			for (int i=0; i<ll_len(pL); i++)
-			{
-				pA = (Articulos*) ll_get(pL, i);
-				//idPosAran = pA->idPosicionArancelaria;
-
-				if (pA!=NULL)
-				{
-					precio = calcularTotalTransporteMar(pA, pTransMar);
-					//printf("\nPRECIO FINAL: %f\n POS ARAN: %d", precio, idPosAran);
-					ret =0;
-				}
-			}
-		}
-	}
-	return precio;
-}
-*/
-
-
-// --------------------------------------BASE IMPONIBLE MARITIMO--------------------------------------------
-float calcularBaseImponibleMaritimo(Articulos* pArt, Maritimo* pMar, PosArancelaria* pPosAranc, float* totalBI)
-{
-	int ret =-1;
-	float seguroPorcTotal, transportePorcTotal, precioFob;
-	int flag;
-	//BI = FOB+seguro+trans
-	if (pArt!=NULL && pMar!=NULL && pPosAranc!=NULL && totalBI!=NULL)
-	{
-		precioFob = art_getValorFob(pArt, &flag);
-		seguroPorcTotal = calcularPorcentajeSeguro(pPosAranc, pArt);
-		transportePorcTotal = calcularPorcentajeTransporteMaritimo(pPosAranc, pArt, pMar);
-		*totalBI = precioFob+ seguroPorcTotal + transportePorcTotal;
+		ret = precioFinal;
 	}
 	return ret;
 }
 
+/** \brief Calcula la base imponible maritima
+ *
+ * \param pArt Articulos* Puntero a la lista de Articulos
+ *  \param pMar Maritimo* Puntero al tipo de dato Maritimo
+ *  \param pPosAranc PosArancelaria* Puntero a la lista de Posiciones Arancelarias
+ *
+ * \return float ret (-1) si el puntero es NULL o la base imponible maritima
+ *
+ */
+float calcularBaseImponibleMaritimo(Articulos* pArt, Maritimo* pMar, PosArancelaria* pPosAranc)
+{
+	float ret =-1;
+	float seguroPorcTotal, transportePorcTotal, precioFob, totalBI;
+	int flag;
+	//BI = FOB+seguro+trans
+	if (pArt!=NULL && pMar!=NULL && pPosAranc!=NULL)
+	{
+		precioFob = art_getValorFob(pArt, &flag);
+		seguroPorcTotal = calcularPorcentajeSeguro(pPosAranc, pArt);
+		transportePorcTotal = calcularPorcentajeTransporteMaritimo(pArt, pMar);
+		totalBI = precioFob+ seguroPorcTotal + transportePorcTotal;
+		ret = totalBI;
+	}
+	return ret;
+}
+/** \brief Calcula el porcentaje del seguro
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ *  \param pPosAranc PosArancelaria* Puntero a la lista de Posicion Arancelaria
+ *
+ * \return float ret (-1) si el puntero es NULL o el porcentaje del seguro calculado
+ *
+ */
 float calcularPorcentajeSeguro (PosArancelaria* pPosAranc, Articulos* pArt)
 {
+	int ret = -1;
 	float precioFob, porcentajeSeguro, seguroTotal;
 	int flag;
 	if (pPosAranc!=NULL && pArt!=NULL)
@@ -244,63 +242,98 @@ float calcularPorcentajeSeguro (PosArancelaria* pPosAranc, Articulos* pArt)
 		precioFob = art_getValorFob(pArt, &flag);
 		porcentajeSeguro = pos_getSeguro(pPosAranc, &flag);
 		seguroTotal = (porcentajeSeguro * precioFob)/100;
+		ret = seguroTotal;
 	}
-	return seguroTotal;
+	return ret;
 }
-
-float calcularPorcentajeTransporteMaritimo(PosArancelaria* pPosAranc, Articulos* pArt, Maritimo* pTransMar)
+/** \brief Calcula el porcentaje del transporte maritimo
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ *  \param pMar Maritimo* Puntero al tipo de dato Maritimo
+ *
+ * \return float ret (-1) si el puntero es NULL o el porcentaje del transporte maritimo calculado
+ *
+ */
+float calcularPorcentajeTransporteMaritimo(Articulos* pArt, Maritimo* pMar)
 {
 	float ret = -1;
 	float precioFob, porcentajeTransp, transporteTotal;
 	int flag;
-	if (pPosAranc!=NULL && pArt!=NULL)
+	if (pMar!=NULL && pArt!=NULL)
 	{
 		precioFob = art_getValorFob(pArt, &flag);
-		porcentajeTransp = calcularTotalTransporteMar(pArt, pTransMar);
+		porcentajeTransp = calcularTotalTransporteMar(pArt, pMar);
 		transporteTotal = (porcentajeTransp * precioFob)/100;
 		ret = transporteTotal;
-
 	}
 	return ret;
 }
 
-//----------------------------COSTO ARG MARITIMO---------------------------------------------
-float calcularCostoArgentino(PosArancelaria* pPosAranc, Articulos* pArt, Maritimo* pTransMar)
+/** \brief Calcula el costo Argentino Maritimo
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ *  \param pPosAranc PosArancelaria* Puntero a la lista de Posicion Arancelaria
+ *  \param pMar Maritimo* Puntero al tipo de dato Maritimo
+ *
+ * \return float ret (-1) si el puntero es NULL o el costo argentino maritimo calculado
+ *
+ */
+float calcularCostoArgentinoMaritimo(PosArancelaria* pPosAranc, Articulos* pArt, Maritimo* pMar)
 {
+	float ret = -1;
 	float baseImponible, porcImportacion, porcTasaEst, costoArgMaritimo;
 
-	if (pPosAranc!=NULL && pArt!= NULL && pTransMar!=NULL)
+	if (pPosAranc!=NULL && pArt!= NULL && pMar!=NULL)
 	{
-		calcularBaseImponibleMaritimo(pArt, pTransMar, pPosAranc, &baseImponible);
-		porcImportacion = calcularPorcImportacion(pArt, pTransMar, pPosAranc);
-		porcTasaEst = calcularPorcTasaEstadistica(pArt, pTransMar, pPosAranc);
+		baseImponible = calcularBaseImponibleMaritimo(pArt, pMar, pPosAranc);
+		porcImportacion = calcularPorcImportacion(pPosAranc, pArt, pMar);
+		porcTasaEst = calcularPorcTasaEstadistica(pPosAranc, pArt, pMar);
 		costoArgMaritimo = baseImponible+porcImportacion+porcTasaEst;
+		ret = costoArgMaritimo;
 	}
-	return costoArgMaritimo;
+	return ret;
 
 }
-
-float calcularPorcImportacion (Articulos* pArt, Maritimo* pMar, PosArancelaria* pPosAranc)
+/** \brief Calcula el porcentaje de importacion maritimo
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ * \param pPosAranc PosArancelaria* Puntero a la lista de Posicion Arancelaria
+ * \param pMar Maritimo* Puntero al tipo de dato Maritimo
+ *
+ * \return float ret (-1) si el puntero es NULL o el porcentaje de importacion maritimo calculado
+ *
+ */
+float calcularPorcImportacion (PosArancelaria* pPosAranc, Articulos* pArt, Maritimo* pMar)
 {
+	float ret = -1;
 	float baseImponible, importacion, porcImporTotal;
 	int flag;
 
 	if (pArt!= NULL && pMar != NULL && pPosAranc!=NULL)
 	{
-		calcularBaseImponibleMaritimo(pArt, pMar, pPosAranc, &baseImponible);
+		baseImponible = calcularBaseImponibleMaritimo(pArt, pMar, pPosAranc);
 		importacion = pos_getImportacion(pPosAranc, &flag);
 		porcImporTotal = (importacion* baseImponible)/100;
+		ret = porcImporTotal;
 	}
-	return porcImporTotal;
+	return ret;
 }
-
-float calcularPorcTasaEstadistica (Articulos* pArt, Maritimo* pMar, PosArancelaria* pPosAranc)
+/** \brief Calcula el porcentaje de la tasa estadistica Maritima
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ * \param pPosAranc PosArancelaria* Puntero a la lista de Posicion Arancelaria
+ * \param pMar Maritimo* Puntero al tipo de dato Maritimo
+ *
+ * \return float ret (-1) si el puntero es NULL o el porcentaje de la tasa estadistica maritima calculada
+ *
+ */
+float calcularPorcTasaEstadistica (PosArancelaria* pPosAranc, Articulos* pArt, Maritimo* pMar)
 {
 	float baseImponible, tasaEstadistica, porcTasaEstTotal;
 	int flag;
 	if (pArt!= NULL && pMar != NULL && pPosAranc!=NULL)
 	{
-		calcularBaseImponibleMaritimo(pArt, pMar, pPosAranc, &baseImponible);
+		baseImponible = calcularBaseImponibleMaritimo(pArt, pMar, pPosAranc);
 		tasaEstadistica = pos_getTasaEstadistica(pPosAranc, &flag);
 		porcTasaEstTotal = (tasaEstadistica * baseImponible)/100;
 

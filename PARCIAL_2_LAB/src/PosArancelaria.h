@@ -59,6 +59,6 @@ int pos_generarId2(void);
 
 int pos_addPosicionArancelaria(Dictionary* pArrayPosAra, char* pFile);
 int pos_editPosicionArancelaria(Dictionary* pArrayPosAra, char* pFile);
-int pos_deletePosicionArancelaria(Dictionary* pArrayPosAra, char* pFile);
+int pos_deletePosicionArancelaria(Dictionary* pArrayPosAra, Dictionary* pArrayArticulos,char* pFilePosAranc, char* pFileArticulos);
 
 #endif /* POSARANCELARIA_H_ */

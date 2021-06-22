@@ -35,9 +35,9 @@ int parser_ArticulosFromText (FILE* pFile, Dictionary* articulos)
 	int idMaxAux;
 	if(pFile!=NULL && articulos!=NULL)
 	{
+		indice =0;
 		do
 		{
-			indice =0;
 			if (fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", idAux, codigo, nombre, descripcion, paisFabricacion, valorFob,peso, ancho, alto ,profundidad, idPosAranc )==11)
 			{
 				if(esNumerica(idAux, 5000)==1)
@@ -52,6 +52,7 @@ int parser_ArticulosFromText (FILE* pFile, Dictionary* articulos)
 						idMaxAux= idArt;
 					else if(idArt > idMaxAux)
 						idMaxAux = idArt;
+
 					indice++;
 				}
 			}

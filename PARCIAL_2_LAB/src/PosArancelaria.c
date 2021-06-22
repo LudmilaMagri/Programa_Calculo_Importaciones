@@ -295,31 +295,71 @@ int pos_editPosicionArancelaria(Dictionary* pArrayPosAra, char* pFile)
 	return ret;
 }
 
-int pos_deletePosicionArancelaria(Dictionary* pArrayPosAra, char* pFile)
+int pos_deletePosicionArancelaria(Dictionary* pArrayPosAra, Dictionary* pArrayArticulos,char* pFilePosAranc, char* pFileArticulos)
 {
 	char idFindPosAranc[32];
 	int ret= -1;
 	PosArancelaria* pPA;
-	if(!utn_getStringWithOnlyNumbers("\nIngrese el id que desea eliminar\n", "\nError\n", idFindPosAranc, 32, 3))
+	LinkedList* pL;
+	LinkedList* listaFiltrada = ll_newLinkedList();
+	Articulos* pA;
+	Articulos* pA2;
+	int respuesta, flagError;
+	char idChar[32];
+	controller_imprimirListaPosAranc(pArrayPosAra);
+	if(!utn_getStringWithOnlyNumbers("\nIngrese el id de la posicion arancelaria que desea eliminar\n", "\nError\n", idFindPosAranc, 32, 3))
 	{
-		pPA= dict_get(pArrayPosAra, idFindPosAranc);
-		if (pPA!= NULL)
+		pPA= dict_get(pArrayPosAra, idFindPosAranc); //obtendo la pos arancel de ese ID que quiero eliminar
+		pL = dict_getValues(pArrayArticulos); //devuelve LL
+		if (pPA!= NULL && pL!= NULL)
 		{
-			pos_delete(pPA);
-			if(!dict_remove(pArrayPosAra, idFindPosAranc))
+			funcionImprimirProlijoArticulos();
+			for (int i =0; i<ll_len(pL); i++)
 			{
-				controller_savePosAraText(pFile, pArrayPosAra);
-				printf("\nEliminado exitosamente");
-				ret = 0;
+				pA = (Articulos*) ll_get(pL, i);
+				if (pA->idPosicionArancelaria == atoi(idFindPosAranc))
+				{
+					ll_add(listaFiltrada, pA);
+					printf("|%-10d|	%-10s|	%-10s|	%-10s|	%-10s|	%-10.2f|	%-10.2f|	%-10.2f|	%-10.2f|	%-10.2f|	%-10d\n", art_getIdArticulo(pA, &flagError), art_getCodigo(pA, &flagError),
+																																art_getNombre(pA, &flagError), art_getDescripcion(pA, &flagError),
+																																art_getPaisFabricacion(pA, &flagError), art_getValorFob(pA, &flagError),
+																																art_getPeso(pA, &flagError), art_getAncho(pA, &flagError),
+																																art_getAlto(pA, &flagError), art_getProfundidad(pA, &flagError),
+																																art_getIdPosicionArancelaria(pA, &flagError));
+
+				}
+			}
+			if(!utn_getNumeroInt(&respuesta, "\nSi elimina esta posicion arancelaria tambien se eliminaran los articulos asociados a ella.\nDesea continuar?\nSI: 1\nNO: 0\n",
+											"\nError\n", 0, 2, 3))
+			{
+				if(respuesta ==1)
+				{
+					pos_delete(pPA);
+					if(!dict_remove(pArrayPosAra, idFindPosAranc))
+					{
+						printf("\nPosicion arancelaria eliminada exitosamente");
+						controller_savePosAraText(pFilePosAranc, pArrayPosAra);
+					}
+
+				}
+			}
+			for(int j=0; j<ll_len(listaFiltrada); j++)
+			{
+				pA2 = (Articulos*) ll_get(listaFiltrada, j);
+				sprintf(idChar, "%d", pA2->idArticulo);
+				if(!art_delete(pA2) &&!dict_remove(pArrayArticulos, idChar))
+				{
+					controller_saveArticulosText(pFileArticulos, pArrayArticulos);
+					printf("\n ARTICULO: %d eliminado exitosamente", pA2->idArticulo);
+					ret = 0;
+				}
 			}
 		}
+	}
 		else
 			printf("\nId inexistente");
-	}
+
+	ll_deleteLinkedList(pL);
+	ll_deleteLinkedList(listaFiltrada);
 	return ret;
 }
-
-
-
-
-

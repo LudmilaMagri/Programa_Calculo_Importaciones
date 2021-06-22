@@ -16,7 +16,6 @@ typedef struct
 }Aereo;
 
 int aer_newParam(Aereo* pAereo, float constVolumetrica, float precioPorKg);
-
 int aer_delete(Aereo* this);
 
 int aer_setConstVolumen(Aereo* this, float constVolumetrica);
@@ -33,21 +32,19 @@ int isValidIdAereo(int idAereo);
 
 
 
-//TOTAL TRANSP AEREO
 float calcularTranspAereoValorVolumetrico(Articulos* pArticulos, Aereo* pAereo);
 float calcularMetroCubico(Articulos* pArticulos);
 float calcularVolumenAereoEnCm (Articulos* pArticulos);
 float calcularTranspAereoPesoReal(Articulos* pArticulos, Aereo* pAereo);
 float calcularTotalTransporteAereo(Articulos* pArticulos, Aereo* pAereo);
-//BASE IMPONIBLE
+
 float calcularBaseImponibleAereo(PosArancelaria* pPosAranc,Articulos* pArt, Aereo* pAereo);
 float calcularPorcentajeSeguro (PosArancelaria* pPosAranc, Articulos* pArt);
-float calcularPorcentajeTransporteAereo(PosArancelaria* pPosAranc, Articulos* pArt, Aereo* pAereo);
+float calcularPorcentajeTransporteAereo(Articulos* pArt, Aereo* pAereo);
 
-//COSTO ARG
+float calcularCostoArgentinoAereo(PosArancelaria* pPosAranc, Articulos* pArt, Aereo* pAereo);
 float calcularPorcImportacionAereo (PosArancelaria* pPosAranc, Articulos* pArt, Aereo* pAereo);
 float calcularPorcTasaEstadisticaAereo(PosArancelaria* pPosAranc, Articulos* pArt, Aereo* pAereo);
-float calcularCostoArgentinoAereo(PosArancelaria* pPosAranc, Articulos* pArt, Aereo* pAereo);
 
 
 #endif /* AEREO_H_ */

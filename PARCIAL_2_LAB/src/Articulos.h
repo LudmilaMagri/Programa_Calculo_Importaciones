@@ -46,6 +46,7 @@ int isValidPaisFabricacion(char*);
 
 int art_setNombre(Articulos* this, char* nombre);
 char* art_getNombre(Articulos* this,int* flagError);
+int art_getNombre2(Articulos* this, char* nombre);
 int isValidNombre(char*);
 
 int art_setValorFob(Articulos* this, float valorFob);
@@ -88,6 +89,11 @@ void art_valorInicialId(int id);
 int art_addArticulo(Dictionary* pArrayArticulos, Dictionary* pArrayPosAranc, char* pFilePosAra, char* pFileArt);
 int art_editArticulo(Dictionary* pArrayArticulos, char* pFileArt);
 int art_deleteArticulo(Dictionary* pArrayArticulos, char* pFileArt);
+
+
+
+int art_funcionCriterioSortNombre (void* a, void* b);
+int art_funcionCriterioSortFob(void*a, void* b);
 
 
 #endif /* ARTICULOS_H_ */

@@ -47,14 +47,12 @@ int isValidIdMaritimo(int);
 float calcularMetroCubico(Articulos* pArticulos);
 float calcularTotalTransporteMar(Articulos* pArticulos, Maritimo* pMar);
 
-// --------------------------------------BASE IMPONIBLE MARITIMO--------------------------------------------
-
-float calcularBaseImponibleMaritimo(Articulos* pArt, Maritimo* pMar, PosArancelaria* pPosAranc, float* totalBI);
+float calcularBaseImponibleMaritimo(Articulos* pArt, Maritimo* pMar, PosArancelaria* pPosAranc);
 float calcularPorcentajeSeguro (PosArancelaria* pPosAranc, Articulos* pArt);
-float calcularPorcentajeTransporteMaritimo(PosArancelaria* pPosAranc, Articulos* pArt, Maritimo* pTransMar);
-//----------------------------COSTO ARG MARITIMO---------------------------------------------
-float calcularCostoArgentino(PosArancelaria* pPosAranc, Articulos* pArt, Maritimo* pTransMar);
-float calcularPorcImportacion (Articulos* pArt, Maritimo* pMar, PosArancelaria* pPosAranc);
-float calcularPorcTasaEstadistica (Articulos* pArt, Maritimo* pMar, PosArancelaria* pPosAranc);
+float calcularPorcentajeTransporteMaritimo(Articulos* pArt, Maritimo* pMar);
+
+float calcularCostoArgentinoMaritimo(PosArancelaria* pPosAranc, Articulos* pArt, Maritimo* pMar);
+float calcularPorcImportacion (PosArancelaria* pPosAranc, Articulos* pArt, Maritimo* pMar);
+float calcularPorcTasaEstadistica (PosArancelaria* pPosAranc, Articulos* pArt, Maritimo* pMar);
 
 #endif /* MARITIMO_H_ */

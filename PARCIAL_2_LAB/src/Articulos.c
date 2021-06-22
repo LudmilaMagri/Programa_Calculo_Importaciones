@@ -158,6 +158,16 @@ char* art_getNombre(Articulos* this,int* flagError)
 	}
 	return auxNombre;
 }
+int art_getNombre2(Articulos* this, char* nombre)
+{
+	int retorno = -1;
+	if (this!= NULL)
+	{
+		strcpy(nombre, this->nombre);
+		retorno = 0;
+	}
+	return retorno;
+}
 int isValidNombre(char* nombre)
 {
 	return 1;
@@ -501,8 +511,49 @@ int art_deleteArticulo(Dictionary* pArrayArticulos, char* pFileArt)
 	return ret;
 }
 
+int art_funcionCriterioSortNombre (void* a, void* b)
+{
+	int retorno =-1;
+	Articulos* pA = NULL;
+	Articulos* pB = NULL;
 
+	pA = (Articulos*) a;
+	pB = (Articulos*) b;
+	char nombreA [100];
+	char nombreB [100];
 
+	art_getNombre2(pA, nombreA);
+	art_getNombre2(pB, nombreB);
+	if (strcmp(nombreA, nombreB)>0)
+	{
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+int art_funcionCriterioSortFob(void*a, void* b)
+{
+	int ret = -1;
+	Articulos* pA = NULL;
+	Articulos* pB = NULL;
+	int precio1,precio2,flag;
+
+	pA = (Articulos*) a;
+	pB = (Articulos*) b;
+
+	precio1 = art_getValorFob(pA, &flag);
+	precio2 = art_getValorFob(pB, &flag);
+	if (precio1>precio2)
+		ret = 1;
+	else if(precio1==precio2)
+		ret = 0;
+	else
+		ret = -1;
+
+	return ret;
+
+}
 
 
 

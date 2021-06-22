@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #ifndef __LINKEDLIST
 #define __LINKEDLIST
 struct Node
@@ -64,4 +63,7 @@ LinkedList* ll_subList(LinkedList* this,int from,int to);
 LinkedList* ll_clone(LinkedList* this);
 int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order);
 
-LinkedList* ll_filtrar4(LinkedList* pArrayListEmployee, int(*funcionCriterio)(void*));
+//retorna lista
+
+LinkedList* ll_filtrar4(LinkedList* pArrayListPosAranc, int(*funcionCriterio)(void*));
+

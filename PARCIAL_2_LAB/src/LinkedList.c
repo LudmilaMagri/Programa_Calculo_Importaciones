@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "LinkedList.h"
+#include "PosArancelaria.h"
+#include "Articulos.h"
 
 static Node* getNode(LinkedList* this, int nodeIndex);
 static int addNode(LinkedList* this, int nodeIndex,void* pElement);
@@ -752,3 +754,28 @@ int ll_reduceInt2(LinkedList* this,int (*pFunc)(void*,void*),void* arg)
 	}
 	return acum;
 }
+
+LinkedList* ll_filtrar4(LinkedList* pArrayListPosAranc, int(*funcionCriterio)(void*))
+{
+	LinkedList* listaFiltrada = NULL;
+	void* pPA;
+	int i;
+	if(pArrayListPosAranc != NULL)
+	{
+		listaFiltrada = ll_newLinkedList();
+		for(i=0; i<ll_len(pArrayListPosAranc); i++)
+		{
+			pPA = (PosArancelaria*) ll_get(pArrayListPosAranc, i);
+			if (funcionCriterio(pPA)==1)
+			{
+				ll_add(listaFiltrada, pPA);
+			}
+		}
+	}
+	return listaFiltrada;
+}
+
+
+
+
+

@@ -1,7 +1,11 @@
 id,codigo,nombre,descripcion,pais,valorFob,peso,ancho,alto,profundidad,idPA
-2,1234DD,monitor,black,china,100.00,20.00,20.00,20.00,20.00,1
-4,2342FA,monitor,black,china,230.00,25.00,5.00,40.00,10.00,5
+3,145DS2,parlante,grey,china,200.00,20.00,15.00,30.00,30.00,8
 5,2345SA,teclado,black,china,300.00,20.00,20.00,20.00,2.00,4
-6,423AD3,mouse,red,japon,200.00,10.00,30.00,10.00,12.00,5
-7,23423F,webcam,grey,japon,123.00,23.00,23.00,21.00,24.00,1
-8,456UYT,mother,black,china,400.00,40.00,18.00,22.00,24.00,4
+6,134TS2,teclado,black,china,300.00,10.00,20.00,30.00,30.00,5
+7,23423F,mouse,grey,japon,123.00,23.00,23.00,21.00,4.00,5
+10,177OS2,webcam,white,japon,200.00,10.00,30.00,10.00,30.00,9
+11,177OS2,webcam,white,japon,200.00,10.00,30.00,10.00,30.00,6
+12,177OS2,mouse,white,japon,200.00,10.00,30.00,10.00,30.00,9
+13,177OS2,parlante,white,japon,200.00,10.00,30.00,10.00,30.00,10
+15,177OS2,mouse,white,japon,200.00,10.00,30.00,10.00,30.00,6
+17,177OS2,monitor,white,japon,200.00,10.00,30.00,10.00,30.00,6

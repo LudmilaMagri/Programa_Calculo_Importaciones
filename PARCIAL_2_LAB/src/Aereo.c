@@ -120,7 +120,16 @@ int isValidIdAereo(int idAereo)
 
 
 
-//------------------------CALCULO TRANSP VALOR VOL------------------
+//-------------------------------------------------------------------------
+
+
+/** \brief Calcula el valor volumetrico del transporte aereo
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ * \param pAereo Aereo* Puntero al tipo de dato Aereo
+ *
+ * \return float ret (-1) si el puntero es NULL o el precio del valor volumetrico calculado
+ */
 float calcularTranspAereoValorVolumetrico(Articulos* pArticulos, Aereo* pAereo)
 {
 	float ret = -1;
@@ -138,11 +147,19 @@ float calcularTranspAereoValorVolumetrico(Articulos* pArticulos, Aereo* pAereo)
 	}
 	return ret;
 }
+
+/** \brief Calcula el volumen en centimetro cubico (c3)
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ *
+ * \return float ret (-1) si el puntero es NULL o el volumen obtenido
+ *
+ */
 float calcularVolumenAereoEnCm (Articulos* pArticulos)
 {
-	float ancho, alto, prof;
+	float ret = -1;
+	float ancho, alto, prof, volumen;
 	int flag;
-	float volumen;
 
 	if (pArticulos!=NULL)
 	{
@@ -150,10 +167,18 @@ float calcularVolumenAereoEnCm (Articulos* pArticulos)
 		alto = art_getAlto(pArticulos, &flag);
 		prof = art_getProfundidad(pArticulos, &flag);
 		volumen = ancho * alto * prof;
+		ret = volumen;
 	}
-	return volumen;
+	return ret;
 }
-//------------------------CALCULO TRANSP PESO REAL------------------
+/** \brief Calcula el peso real del transporte aereo
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ * \param pAereo Aereo* Puntero al tipo de dato Aereo
+ *
+ * \return float ret (-1) si el puntero es NULL o el precio real
+ */
+
 float calcularTranspAereoPesoReal(Articulos* pArticulos, Aereo* pAereo)
 {
 	float ret = -1;
@@ -168,7 +193,13 @@ float calcularTranspAereoPesoReal(Articulos* pArticulos, Aereo* pAereo)
 	}
 	return ret;
 }
-//------------------------CALCULO TOTAL TRANSP AEREO------------------
+/** \brief Calcula el mayor del transporte aereo
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ * \param pAereo Aereo* Puntero al tipo de dato Aereo
+ *
+ * \return float ret (-1) si el puntero es NULL o el precio mayor del transporte aereo
+ */
 float calcularTotalTransporteAereo(Articulos* pArticulos, Aereo* pAereo)
 {
 	float ret = -1;
@@ -190,7 +221,15 @@ float calcularTotalTransporteAereo(Articulos* pArticulos, Aereo* pAereo)
 	return ret;
 }
 
-// --------------------------------------BASE IMPONIBLE AEREO--------------------------------------------
+/** \brief Calcula la base imponible aerea
+ *
+ * \param pPosAranc PosArancelaria* Puntero a la lista de Posiciones Arancelarias
+ * \param pArt Articulos* Puntero a la lista de Articulos
+ * \param pMar Maritimo* Puntero al tipo de dato Maritimo
+ *
+ * \return float ret (-1) si el puntero es NULL o la base imponible aerea
+ *
+ */
 float calcularBaseImponibleAereo(PosArancelaria* pPosAranc,Articulos* pArt, Aereo* pAereo)
 {
 	int ret = -1;
@@ -200,19 +239,26 @@ float calcularBaseImponibleAereo(PosArancelaria* pPosAranc,Articulos* pArt, Aere
 	{
 		precioFob = art_getValorFob(pArt, &flag);
 		seguroPorcTotal = calcularPorcentajeSeguro(pPosAranc, pArt);
-		transportePorcTotal = calcularPorcentajeTransporteAereo(pPosAranc, pArt, pAereo);
+		transportePorcTotal = calcularPorcentajeTransporteAereo(pArt, pAereo);
 		baseImponibleTotal = precioFob + seguroPorcTotal + transportePorcTotal;
 		ret = baseImponibleTotal;
 	}
 	return ret;
 }
-
-float calcularPorcentajeTransporteAereo(PosArancelaria* pPosAranc, Articulos* pArt, Aereo* pAereo)
+/** \brief Calcula el porcentaje del transporte aereo
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ *  \param pAereo Aereo* Puntero al tipo de dato Aereo
+ *
+ * \return float ret (-1) si el puntero es NULL o el porcentaje del transporte aereo calculado
+ *
+ */
+float calcularPorcentajeTransporteAereo(Articulos* pArt, Aereo* pAereo)
 {
 	float ret = -1;
 	float precioFob, porcentajeTransp, transporteTotal;
 	int flag;
-	if (pPosAranc!=NULL && pArt!=NULL)
+	if (pAereo!=NULL && pArt!=NULL)
 	{
 		precioFob = art_getValorFob(pArt, &flag);
 		porcentajeTransp = calcularTotalTransporteAereo(pArt, pAereo);
@@ -222,7 +268,15 @@ float calcularPorcentajeTransporteAereo(PosArancelaria* pPosAranc, Articulos* pA
 	return ret;
 }
 
-// --------------------------------------COSTO ARG AEREO--------------------------------------------
+/** \brief Calcula el costo Argentino Aereo
+ *
+ * \param pArt Articulos* Puntero a la lista de Articulos
+ * \param pPosAranc PosArancelaria* Puntero a la lista de Posicion Arancelaria
+ * \param pAereo Aereo* Puntero al tipo de dato Aereo
+ *
+ * \return float ret (-1) si el puntero es NULL o el costo argentino aereo calculado
+ *
+ */
 float calcularCostoArgentinoAereo(PosArancelaria* pPosAranc, Articulos* pArt, Aereo* pAereo)
 {
 	float ret = -1;
@@ -237,7 +291,15 @@ float calcularCostoArgentinoAereo(PosArancelaria* pPosAranc, Articulos* pArt, Ae
 	}
 	return ret;
 }
-
+/** \brief Calcula el porcentaje de importacion aereo
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ * \param pPosAranc PosArancelaria* Puntero a la lista de Posicion Arancelaria
+ * \param pAereo Aereo* Puntero al tipo de dato Aereo
+ *
+ * \return float ret (-1) si el puntero es NULL o el porcentaje de importacion aereo calculado
+ *
+ */
 float calcularPorcImportacionAereo (PosArancelaria* pPosAranc, Articulos* pArt, Aereo* pAereo)
 {
 	float ret = -1;
@@ -252,6 +314,15 @@ float calcularPorcImportacionAereo (PosArancelaria* pPosAranc, Articulos* pArt, 
 	}
 	return ret;
 }
+/** \brief Calcula el porcentaje de la tasa estadistica aerea
+ *
+ * \param pArticulos Articulos* Puntero a la lista de Articulos
+ * \param pPosAranc PosArancelaria* Puntero a la lista de Posicion Arancelaria
+ * \param pAereo Aereo* Puntero al tipo de dato Aereo
+ *
+ * \return float ret (-1) si el puntero es NULL o el porcentaje de la tasa estadistica aerea calculada
+ *
+ */
 float calcularPorcTasaEstadisticaAereo(PosArancelaria* pPosAranc, Articulos* pArt, Aereo* pAereo)
 {
 	float ret = -1;
