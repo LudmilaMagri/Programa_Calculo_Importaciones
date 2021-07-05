@@ -25,7 +25,7 @@ Articulos* art_new(void)
 }
 
 Articulos* art_newParam(char* codigo,char* descripcion,char* paisFabricacion, char* nombre, float valorFob, float peso, float ancho,
-						float alto, float profundidad, int idArticulo, int idPosicionArancelaria)
+						float alto, float profundidad, int idArticulo, int idPosicionArancelaria, float valorAereo, float valorMaritimo)
 {
 	Articulos* auxArt = art_new();
 	if(auxArt != NULL)
@@ -40,7 +40,9 @@ Articulos* art_newParam(char* codigo,char* descripcion,char* paisFabricacion, ch
 				art_setAlto(auxArt, alto) <0 ||
 				art_setProfundidad(auxArt, profundidad) <0 ||
 				art_setIdArticulo(auxArt, idArticulo) <0 ||
-				art_setIdPosicionArancelaria(auxArt, idPosicionArancelaria) <0 )
+				art_setIdPosicionArancelaria(auxArt, idPosicionArancelaria) <0 ||
+				art_setValorAereo(auxArt, valorAereo) ||
+				art_setValorMaritimo(auxArt, valorMaritimo))
 		{
 			art_delete(auxArt);
 			auxArt = NULL;
@@ -134,7 +136,12 @@ char* art_getPaisFabricacion(Articulos* this,int* flagError)
 }
 int isValidPaisFabricacion(char* paisFabricacion)
 {
-	return 1;
+	int ret = -1;
+	if (esSoloLetras(paisFabricacion, PAIS_LEN))
+	{
+		ret = 1;
+	}
+	return ret;
 }
 int art_setNombre(Articulos* this, char* nombre)
 {
@@ -170,7 +177,12 @@ int art_getNombre2(Articulos* this, char* nombre)
 }
 int isValidNombre(char* nombre)
 {
-	return 1;
+	int ret = -1;
+	if (esSoloLetras(nombre, NOM_LEN))
+	{
+		ret = 1;
+	}
+	return ret;
 }
 
 float art_setValorFob(Articulos* this, float valorFob)
@@ -183,7 +195,48 @@ float art_setValorFob(Articulos* this, float valorFob)
 	}
 	return retorno;
 }
-
+float art_setValorAereo(Articulos* this, float valorAereo)
+{
+	float retorno = -1;
+	if(this != NULL )
+	{
+		this->valorAereo = valorAereo;
+		retorno = 0;
+	}
+	return retorno;
+}
+float art_getValorAereo(Articulos* this,int* flagError)
+{
+	*flagError = -1;
+	float aux = -1;
+	if(this != NULL && flagError != NULL )
+	{
+		aux=this->valorAereo;
+		*flagError = 0;
+	}
+	return aux;
+}
+float art_setValorMaritimo(Articulos* this, float valorMaritimo)
+{
+	float retorno = -1;
+	if(this != NULL )
+	{
+		this->valorMaritimo = valorMaritimo;
+		retorno = 0;
+	}
+	return retorno;
+}
+float art_getValorMaritimo(Articulos* this,int* flagError)
+{
+	*flagError = -1;
+	float aux = -1;
+	if(this != NULL && flagError != NULL )
+	{
+		aux=this->valorMaritimo;
+		*flagError = 0;
+	}
+	return aux;
+}
 float art_getValorFob(Articulos* this,int* flagError)
 {
 	*flagError = -1;
@@ -197,7 +250,12 @@ float art_getValorFob(Articulos* this,int* flagError)
 }
 int isValidValorFob(float valorFob)
 {
-	return 1;
+	int ret = -1;
+	if (valorFob> 0 && valorFob<=999999999999)
+	{
+		ret = 1;
+	}
+	return ret;
 }
 float art_setPeso(Articulos* this, float peso)
 {
@@ -222,7 +280,12 @@ float art_getPeso(Articulos* this,int* flagError)
 }
 int isValidPeso(float peso)
 {
-	return 1;
+	int ret = -1;
+	if (peso> 0 && peso<=999999999999)
+	{
+		ret = 1;
+	}
+	return ret;
 }
 float art_setAncho(Articulos* this, float ancho)
 {
@@ -247,7 +310,12 @@ float art_getAncho(Articulos* this,int* flagError)
 }
 int isValidAncho(float ancho)
 {
-	return 1;
+	int ret = -1;
+	if (ancho> 0 && ancho<=999999999999)
+	{
+		ret = 1;
+	}
+	return ret;
 }
 float art_setAlto(Articulos* this, float alto)
 {
@@ -272,7 +340,12 @@ float art_getAlto(Articulos* this,int* flagError)
 }
 int isValidAlto(float alto)
 {
-	return 1;
+	int ret = -1;
+	if (alto> 0 && alto<=999999999999)
+	{
+		ret = 1;
+	}
+	return ret;
 }
 float art_setProfundidad(Articulos* this, float profundidad)
 {
@@ -287,7 +360,7 @@ float art_setProfundidad(Articulos* this, float profundidad)
 float art_getProfundidad(Articulos* this,int* flagError)
 {
 	*flagError = -1;
-	int auxProfundidad = -1;
+	float auxProfundidad = -1;
 	if(this != NULL && flagError != NULL )
 	{
 		auxProfundidad=this->profundidad;
@@ -297,7 +370,12 @@ float art_getProfundidad(Articulos* this,int* flagError)
 }
 int isValidProfundidad(float profundidad)
 {
-	return 1;
+	int ret = -1;
+	if (profundidad> 0 && profundidad<=999999999999)
+	{
+		ret = 1;
+	}
+	return ret;
 }
 int art_setIdArticulo(Articulos* this,int idArticulo)
 {
@@ -322,7 +400,12 @@ int art_getIdArticulo(Articulos* this,int* flagError)
 }
 int isValidIdArticulo(int idArticulo)
 {
-	return 1;
+	int ret = -1;
+	if (idArticulo> 0 && idArticulo<=999999999999)
+	{
+		ret = 1;
+	}
+	return ret;
 }
 int art_setIdPosicionArancelaria(Articulos* this,int idPosicionArancelaria)
 {
@@ -402,6 +485,8 @@ int art_addArticulo(Dictionary* pArrayArticulos, Dictionary* pArrayPosAranc, cha
 
 	if(pArrayArticulos!= NULL && pArrayPosAranc!=NULL)
 	{
+		pA= art_new();
+
 		controller_imprimirListaPosAranc(pArrayPosAranc);
 		if (!utn_getStringWithOnlyNumbers("\nIngrese el id de la posicion arancelaria\n", "\nError\n", idPosAranc, 32, 3))
 		{
@@ -421,8 +506,9 @@ int art_addArticulo(Dictionary* pArrayArticulos, Dictionary* pArrayPosAranc, cha
 					newId = art_generarId();
 					printf("\nID NUEVO: %d\n", newId);
 					sprintf(idArt, "%d", newId);
-					pA= art_newParam(codigo, descripcion, paisFabricacion, nombre, valorFob, peso, ancho, alto, profundidad, newId, atoi(idPosAranc));
-					if (pA!=NULL)
+					if (!art_setCodigo(pA, codigo) && !art_setNombre(pA, nombre) &&!art_setDescripcion(pA, descripcion) && !art_setPaisFabricacion(pA, paisFabricacion) &&
+							!art_setValorFob(pA, valorFob) && !art_setPeso(pA, peso) && !art_setAncho(pA, ancho) &&!art_setAlto(pA, alto) && !art_setProfundidad(pA, profundidad)
+							&& !art_setIdArticulo(pA, newId) && !art_setIdPosicionArancelaria(pA, atoi(idPosAranc)))
 					{
 						dict_insert(pArrayArticulos, idArt, pA);
 						controller_saveArticulosText(pFileArt, pArrayArticulos);

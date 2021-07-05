@@ -34,7 +34,7 @@ int controller_saveArticulosTextLL(char* pFile, LinkedList* articulos);
 
 int controller_imprimirListaArticulos(Dictionary* articulos);
 int controller_imprimirListaPosAranc(Dictionary* posicionAranc);
-int controller_printCostoArgMaritimoAereo(Dictionary* pArt, Dictionary* pPosAranc, Maritimo* pMar, Aereo* pAereo);
+int controller_printCostoArgMaritimoAereo(Dictionary* pArt, Dictionary* pPosAranc, Maritimo* pMar, Aereo* pAereo, char* pFileArt);
 
 
 int controller_ABM_Articulos(Dictionary* pArt, Dictionary* pPosAranc,char* pFilePosAra, char* pFileArt);
@@ -61,6 +61,10 @@ float controller_buscarMayorCostoArgMaritimo(Dictionary* pArt, Dictionary* pPosA
 
 float aplicarDescuento (LinkedList* listaFiltrada, Dictionary* pArt);
 int aplicarDescuentoEnValorFob (LinkedList* listaFiltrada);
+
+float controller_buscarMayorCostoArgAereo(Dictionary* pArt, Dictionary* pPosAranc, Aereo* pAereo);
+
+float controller_ordenarPorNombreCadaPosAranc(Dictionary* pArt, Dictionary* pPosAranc, Aereo* pAereo);
 
 
 int controller_buscarNomenclatura(Dictionary* pPosAranc, Dictionary* pArt);

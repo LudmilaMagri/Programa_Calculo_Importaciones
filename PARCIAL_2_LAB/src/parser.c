@@ -28,7 +28,7 @@ int parser_ArticulosFromText (FILE* pFile, Dictionary* articulos)
 	char nombre[NOM_LEN];
 	char idPosAranc[200];
 	char idAux[100];
-	char valorFob[2000], peso[2000], ancho[3000], alto[2000], profundidad[2000];
+	char valorFob[2000], peso[2000], ancho[3000], alto[2000], profundidad[2000], valorAereo[2000], valorMar[2000];
 	int idArt;
 	Articulos* pA=NULL;
 	int indice = -1;
@@ -38,11 +38,11 @@ int parser_ArticulosFromText (FILE* pFile, Dictionary* articulos)
 		indice =0;
 		do
 		{
-			if (fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", idAux, codigo, nombre, descripcion, paisFabricacion, valorFob,peso, ancho, alto ,profundidad, idPosAranc )==11)
+			if (fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", idAux, codigo, nombre, descripcion, paisFabricacion, valorFob,peso, ancho, alto ,profundidad, idPosAranc, valorAereo, valorMar)==13)
 			{
 				if(esNumerica(idAux, 5000)==1)
 				{
-					pA= art_newParam(codigo, descripcion, paisFabricacion, nombre, atof(valorFob), atof(peso), atof(ancho), atof(alto), atof(profundidad), atoi(idAux), atoi(idPosAranc));
+					pA= art_newParam(codigo, descripcion, paisFabricacion, nombre, atof(valorFob), atof(peso), atof(ancho), atof(alto), atof(profundidad), atoi(idAux), atoi(idPosAranc), atof(valorAereo), atof(valorMar));
 
 					if(pA != NULL)
 					{
@@ -61,6 +61,7 @@ int parser_ArticulosFromText (FILE* pFile, Dictionary* articulos)
 	}
 	return idMaxAux;
 }
+
 int parser_PosArancFromText(FILE* pFile, Dictionary* posAranc)
 {
 	char nomenclaturaAranc[200];
@@ -107,7 +108,7 @@ int parser_TranspMarFromText(FILE* pFile, Maritimo* transpMar)
 		do
 		{
 			indice =0;
-			if (fscanf(pFile, "%[^,],%[^\n]\n", precio, volumen)==2)
+			if (fscanf(pFile, "%[^,],%[^\n]\n", volumen, precio)==2)
 			{
 				mar_newParam(transpMar,atof(volumen),atof(precio));
 				ret = 0;

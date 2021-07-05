@@ -193,9 +193,11 @@ void funcionImprimirProlijoArticulos()
 	char alto [10] = "ALTO";
 	char prof [10] = "PROFUN.";
 	char idPA[10] = "ID P.A";
+	char aereo [20] = "COSTO AEREO";
+	char mar [20] = "COSTO MARITIMO";
 
-	printf("\n|%-10s|	%-10s|	%-10s|	%-10s|	%-10s|	%-10s|	%-10s|	%-10s|	%-10s|	%-10s|	%-10s\n", id, codigo, nombre, desc, pais, fob, peso, ancho,alto, prof,idPA);
-	printf("|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n");
+	printf("\n|%-10s|	%-10s|	%-10s|	%-10s\t|	%-10s|	%-10s|	%-10s|	%-10s|	%-10s|	%-10s|	%-10s	%-10s	%-10s\n", id, codigo, nombre, desc, pais, fob, peso, ancho, alto, prof, idPA, mar, aereo);
+	printf("|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n");
 
 }
 int controller_imprimirListaArticulos(Dictionary* articulos)
@@ -220,12 +222,12 @@ int controller_imprimirListaArticulos(Dictionary* articulos)
 				pA =(Articulos*)ll_get(pL, i); //elementos que estan en el ll que estaban en el diccionario
 				if(pA!=NULL)
 				{
-					printf("|%-10d|	%-10s|	%-10s|%s\t	%-10s|	%-10f|%-10.3f|	%-10.3f|	%-10.3f|	%-10.3f|	%-10d\n", art_getIdArticulo(pA, &flagError), art_getCodigo(pA, &flagError),
+					printf("|%-10d|	%-10s|	%-10s|%10s\t|\t%-10s|	%-10.4f|%-10.3f|	%-10.3f|	%-10.3f|	%-10.3f|	%-10d |		%f	| %f\n", art_getIdArticulo(pA, &flagError), art_getCodigo(pA, &flagError),
 																											art_getNombre(pA, &flagError), art_getDescripcion(pA, &flagError),
 																											art_getPaisFabricacion(pA, &flagError), art_getValorFob(pA, &flagError),
 																											art_getPeso(pA, &flagError), art_getAncho(pA, &flagError),
 																											art_getAlto(pA, &flagError), art_getProfundidad(pA, &flagError),
-																											art_getIdPosicionArancelaria(pA, &flagError));
+																											art_getIdPosicionArancelaria(pA, &flagError),art_getValorMaritimo(pA, &flagError) ,art_getValorAereo(pA, &flagError));
 				}
 			}
 		}
@@ -350,7 +352,7 @@ int controller_saveArticulosText(char* pFile, Dictionary* articulos)
 
 	if(fpArchivo!=NULL)
 	{
-		fprintf(fpArchivo,"id,codigo,nombre,descripcion,pais,valorFob,peso,ancho,alto,profundidad,idPA\n");
+		fprintf(fpArchivo,"id,codigo,nombre,descripcion,pais,valorFob,peso,ancho,alto,profundidad,idPA,costoArgAereo,costoMaritimo\n");
 		pL = dict_getValues(articulos);
 		if(pL!=NULL)
 		{
@@ -359,12 +361,13 @@ int controller_saveArticulosText(char* pFile, Dictionary* articulos)
 				pA = (Articulos*) ll_get(pL, i);
 				if(pA!=NULL)
 				{
-					fprintf(fpArchivo, "%d,%s,%s,%s,%s,%.2f,%.2f,%.2f,%.2f,%.2f,%d\n",art_getIdArticulo(pA, &flag), art_getCodigo(pA, &flag),
+					fprintf(fpArchivo, "%d,%s,%s,%s,%s,%.4f,%.4f,%.4f,%.4f,%.4f,%d,%f,%f\n",art_getIdArticulo(pA, &flag), art_getCodigo(pA, &flag),
 																					art_getNombre(pA, &flag), art_getDescripcion(pA, &flag),
 																					art_getPaisFabricacion(pA, &flag), art_getValorFob(pA, &flag),
 																					art_getPeso(pA, &flag), art_getAncho(pA, &flag),
 																					art_getAlto(pA, &flag), art_getProfundidad(pA, &flag),
-																					art_getIdPosicionArancelaria(pA, &flag));
+																					art_getIdPosicionArancelaria(pA, &flag), art_getValorAereo(pA, &flag),
+																					art_getValorMaritimo(pA, &flag));
 					ret =0;
 				}
 			}
@@ -492,7 +495,7 @@ void funcionImprimirProlijoCostoArgentino()
 }
 
 
-int controller_printCostoArgMaritimoAereo(Dictionary* pArt, Dictionary* pPosAranc, Maritimo* pMar, Aereo* pAereo)
+int controller_printCostoArgMaritimoAereo(Dictionary* pArt, Dictionary* pPosAranc, Maritimo* pMar, Aereo* pAereo, char* pFileArt)
 {
 	int ret = -1;
 	LinkedList* pL;
@@ -519,15 +522,22 @@ int controller_printCostoArgMaritimoAereo(Dictionary* pArt, Dictionary* pPosAran
 				{
 					 costoArgMaritimoTotal=calcularCostoArgentinoMaritimo(pPA, pA, pMar);
 					 costoArgAereoTotal = calcularCostoArgentinoAereo(pPA, pA, pAereo);
+					 art_setValorAereo(pA, costoArgAereoTotal);
+					 art_setValorMaritimo(pA, costoArgMaritimoTotal);
+
 					 printf("|%-10d|	%-10s|	%-10s|	%-10s|	%-10s|	%-10.2f|	%-10.2f|	%-10.2f|	%-10.2f|	%-10.2f|	%-10d|	%-10f USD	|	%-10f USD\n", art_getIdArticulo(pA, &flag), art_getCodigo(pA, &flag),
 																																art_getNombre(pA, &flag), art_getDescripcion(pA, &flag),
 																																art_getPaisFabricacion(pA, &flag), art_getValorFob(pA, &flag),
 																																art_getPeso(pA, &flag), art_getAncho(pA, &flag),
 																																art_getAlto(pA, &flag), art_getProfundidad(pA, &flag),
-																																art_getIdPosicionArancelaria(pA, &flag), costoArgMaritimoTotal, costoArgAereoTotal);
+																																art_getIdPosicionArancelaria(pA, &flag), art_getValorMaritimo(pA, &flag), art_getValorAereo(pA, &flag));
+
+
 				}
 			}
 		}
+		ll_deleteLinkedList(pL);
+		controller_saveArticulosText(pFileArt, pArt);
 	}
 	return ret;
 }
@@ -547,9 +557,7 @@ int controller_sort (Dictionary* pArt, char* pFile)
 					"\n\t---------------------------------------------------------------"
 					"\n\t\t***** MENU DE ORDENAMIENTO*****							\n"
 					"\n\t*	1. Ordenar por nombre.\t\t\t*"
-					"\n\t*	2. Ordenar por ID.\t\t\t*"
-					"\n\t*	3. Ordenar por codigo.\t\t\t*"
-					"\n\t*	4. Ordenar por valor FOB.\t*"
+					"\n\t*	2. Ordenar por precio FOB.\t\t\t*"
 					"\n\t*	10. Salir.\t\t\t\t*"
 					"\n\t---------------------------------------------------------------\n\n",
 							"Opcion incorrecta", 0, 11, 3))
@@ -578,43 +586,10 @@ int controller_sort (Dictionary* pArt, char* pFile)
 		}while(opcion!=10);
 		ret = 0;
 	}
-	return ret;
 	ll_deleteLinkedList(pL);
-}
-
-
-/*
-int controller_saveArticulosTextLL(char* pFile, LinkedList* articulos)
-{
-	int ret = -1;
-	int i;
-	int flag;
-	FILE* fpArchivo;
-	Articulos* pA;
-	fpArchivo = fopen(pFile, "w");
-
-	if(fpArchivo!=NULL)
-	{
-		fprintf(fpArchivo,"id,codigo,nombre,descripcion,pais,valorFob,peso,ancho,alto,profundidad,idPA\n");
-		for(i=0; i<ll_len(articulos); i++)
-		{
-			pA = (Articulos*) ll_get(articulos, i);
-			if(pA!=NULL)
-			{
-				fprintf(fpArchivo, "%d,%s,%s,%s,%s,%.2f,%.2f,%.2f,%.2f,%.2f,%d\n",art_getIdArticulo(pA, &flag), art_getCodigo(pA, &flag),
-																				art_getNombre(pA, &flag), art_getDescripcion(pA, &flag),
-																				art_getPaisFabricacion(pA, &flag), art_getValorFob(pA, &flag),
-																				art_getPeso(pA, &flag), art_getAncho(pA, &flag),
-																				art_getAlto(pA, &flag), art_getProfundidad(pA, &flag),
-																				art_getIdPosicionArancelaria(pA, &flag));
-				ret =0;
-			}
-		}
-		fclose(fpArchivo);
-	}
 	return ret;
 }
-*/
+
 
 int controller_imprimirListaFiltradaPosAran(Dictionary* posicionAranc)
 {
@@ -633,6 +608,7 @@ int controller_imprimirListaFiltradaPosAran(Dictionary* posicionAranc)
 		{
 			listaFiltrada = ll_filtrar4(pL, funcionCriterioFiltrarLic);
 			funcionImprimirProlijoPosAranc();
+
 			for (i=0; i<ll_len(listaFiltrada); i++)
 			{
 				pPA =(PosArancelaria*)ll_get(listaFiltrada, i); //elementos que estan en el ll que estaban en el diccionario
@@ -695,7 +671,7 @@ int funcionCriterioValorFob(void* pGenerico)
 	int fob, flag;
 
 	fob = art_getValorFob(pA, &flag);
-	if (fob>=300)
+	if (fob>=10)
 	{
 		return 1;
 	}
@@ -722,50 +698,6 @@ int aplicarDescuentoEnValorFob (LinkedList* listaFiltrada)
 	return ret;
 }
 
-/*
-//filtro los que tienen el tipo de lic automatica y se les hace un descuento en su precio fob
-int controller_aplicarListaFiltrada(Dictionary* pArrayListPosAranc, Dictionary* pArticulos)
-{
-	int ret;
-	LinkedList* listaFiltrada;
-	LinkedList* pL;
-	Articulos* pA;
-	PosArancelaria* pPA;
-	int flagError;
-	pL = dict_getValues(pArrayListPosAranc);
-
-	pA =(Articulos*)ll_get(pL, i); //elementos que estan en el ll que estaban en el diccionario
-			idPA = pA->idPosicionArancelaria;
-			sprintf(keyPA, "%d", idPA);
-			pPA = dict_get(pPosAranc, keyPA);
-
-	if (pArrayListPosAranc!=NULL && pArticulos!=NULL && pL!=NULL)
-	{
-		listaFiltrada = ll_filtrar4(pL, funcionCriterioFiltrarLic); //filtro nueva lista de pos aranc
-		if (!aplicarDescuento(listaFiltrada, pArticulos))
-		{
-			printf("\nDescuento realizado exitosamente\n");
-			for (int i = 0; i<ll_len(listaFiltrada); i++)
-			{
-				pA =(Articulos*) ll_get(listaFiltrada, i);
-				if (pA!= NULL)
-				{
-					printf("|%-10d|	%-10s|	%-10s|	%-10s|	%-10s|	%-10.2f|	%-10.2f|	%-10.2f|	%-10.2f|	%-10.2f|	%-10d\n", art_getIdArticulo(pA, &flagError), art_getCodigo(pA, &flagError),
-																																					art_getNombre(pA, &flagError), art_getDescripcion(pA, &flagError),
-																																					art_getPaisFabricacion(pA, &flagError), art_getValorFob(pA, &flagError),
-																																					art_getPeso(pA, &flagError), art_getAncho(pA, &flagError),
-																																					art_getAlto(pA, &flagError), art_getProfundidad(pA, &flagError),
-																																					art_getIdPosicionArancelaria(pA, &flagError));
-				}
-			}
-		}
-		ll_deleteLinkedList(listaFiltrada);
-		ll_deleteLinkedList(pL);
-		ret = 0;
-	}
-	return ret;
-}
-*/
 int funcionCriterioFiltrarLic(void* pGenerico)
 {
 	PosArancelaria* pPA;
@@ -773,11 +705,180 @@ int funcionCriterioFiltrarLic(void* pGenerico)
 	int lic, flag;
 
 	lic = pos_getTipoLicencia(pPA, &flag);
-	if (lic==1)
+	if (lic==0)
 	{
 		return 1;
 	}
 	return 0;
+}
+
+float controller_buscarMayor (Dictionary* pArt)
+{
+	Articulos* pA;
+	LinkedList* pL;
+	float fob,max;
+	int flag;
+	float ret=-1;
+
+	if (pArt!= NULL)
+	{
+		pL = dict_getValues(pArt);
+		if (pL!=NULL)
+		{
+			for (int i=0; i<ll_len(pL); i++)
+			{
+				pA =(Articulos*)ll_get(pL, i);
+				fob = art_getValorFob(pA, &flag);
+				if (i ==0 || fob > max)
+					max = fob;
+			}
+		}
+	}
+	ll_deleteLinkedList(pL);
+	printf("\nEl mayor valor fob es: %.3f", max);
+	return ret;
+}
+
+float controller_buscarMayorCostoArgAereo(Dictionary* pArt, Dictionary* pPosAranc, Aereo* pAereo)
+{
+	Articulos* pA;
+	LinkedList* pL;
+	LinkedList* pPOS;
+	PosArancelaria* pPA;
+	float max= 0;
+	float ret=-1;
+	char* descripcion;
+	float valorFob;
+	int flag, posAranc;
+
+	if (pArt!= NULL && pPosAranc!=NULL && pAereo!=NULL)
+	{
+		pL = dict_getValues(pArt);
+		pPOS = dict_getValues(pPosAranc);
+		if (pL!=NULL && pPOS !=NULL)
+		{
+			for (int i=0; i<ll_len(pPOS); i++)
+			{
+				pPA = (PosArancelaria*) ll_get(pPOS, i);
+				max = 0; //se reinicia el max para cada pos Aranc
+				for (int j=0; j<ll_len(pL); j++)
+				{
+					pA = (Articulos*)ll_get(pL, j);
+
+					if(pA->idPosicionArancelaria == pPA->idPosArancelaria)
+					{
+						if (pA->valorAereo > max)
+						{
+							max = pA->valorAereo;
+							descripcion=art_getDescripcion(pA, &flag);
+							valorFob =art_getValorFob(pA, &flag);
+							posAranc = art_getIdPosicionArancelaria(pA, &flag);
+							ret = 0;
+						}
+					}
+				}
+				printf("\nID POS ARANC: %d - DESCRIPCION: %s - VALOR FOB: %.3f - COSTO ARG AEREO: %f\n", posAranc,descripcion, valorFob, max);
+			}
+		}
+		ll_deleteLinkedList(pL);
+		ll_deleteLinkedList(pPOS);
+	}
+	return ret;
+}
+
+// ****************************************************
+float controller_ordenarPorNombreCadaPosAranc(Dictionary* pArt, Dictionary* pPosAranc, Aereo* pAereo)
+{
+	Articulos* pA;
+	LinkedList* pL;
+	LinkedList* pPOS;
+	float ret=-1;
+	int flag;
+
+	if (pArt!= NULL && pPosAranc!=NULL && pAereo!=NULL)
+	{
+		pL = dict_getValues(pArt);
+		pPOS = dict_getValues(pPosAranc);
+		if (pL!=NULL && pPOS !=NULL)
+		{
+			for (int i=1; i<=ll_len(pPOS); i++)
+			{
+				for (int j=0; j<ll_len(pL); j++)
+				{
+					pA = (Articulos*)ll_get(pL, j);
+
+					if(pA->idPosicionArancelaria == i)
+					{
+						if (ll_sort(pL, art_funcionCriterioSortNombre, 1) ==0)
+						{
+							printf("\nPOS ARA: %d - NOMBRE: %s", art_getIdPosicionArancelaria(pA, &flag),art_getNombre(pA, &flag));
+							ret =0;
+						}
+					}
+				}
+
+				//printf("\nDESCRIPCION: %s - VALOR FOB: %.3f - COSTO ARG AEREO: %f\n", descripcion, valorFob, max);
+			}
+		}
+		controller_imprimirListaArticulosSort(pL);
+
+		ll_deleteLinkedList(pL);
+		ll_deleteLinkedList(pPOS);
+	}
+	return ret;
+}
+
+
+
+int controller_buscarNomenclatura(Dictionary* pPosAranc, Dictionary* pArt)
+{
+	int ret = -1;
+	PosArancelaria* pPA;
+	LinkedList* pL;
+	LinkedList* pLArt;
+	Articulos* pA;
+	char nomenclatura[2000];
+	int flagError;
+	//int idPA;
+
+	if (pPosAranc!=NULL)
+	{
+		pL = dict_getValues(pPosAranc);
+		if(utn_getTextoNumerosCaracter(nomenclatura, 2000, "\nIngrese nomenclatura", "\nError\n", 3)==0)
+		{
+			for (int i=0; i<ll_len(pL); i++)
+			{
+				pPA = ll_get(pL, i);
+				if (strcmp (pPA->nomenclaturaAranc,nomenclatura)==0)
+				{
+					funcionImprimirProlijoPosAranc();
+					printf("|%5d\t|\t%s\t|%-10.3f|\t%-5.3f\t\t|%5.3f\t\t| %s  \n", pos_getIdPosArancelaria(pPA, &flagError), pos_getNomenclatura(pPA, &flagError),
+																					pos_getSeguro(pPA, &flagError), pos_getImportacion(pPA, &flagError),
+																					pos_getTasaEstadistica(pPA, &flagError), ESTADO[pos_getTipoLicencia(pPA, &flagError)]);
+					//idPA = pPA->idPosArancelaria;
+					pLArt = dict_getValues(pArt);
+					printf("\n\nARTICULOS ASOCIADOS A LA NOMENCLATURA SOLICITADA: \n\n");
+					funcionImprimirProlijoArticulos();
+					for (int j=0; j<ll_len(pLArt); j++)
+					{
+						pA = (Articulos*) ll_get(pLArt, j);
+						if (pA->idPosicionArancelaria == pPA->idPosArancelaria)
+						{
+							printf("|%-10d|	%-10s|	%-10s|	%-10s|	%-10s|	%-10f|	%-10.3f|	%-10.3f|	%-10.3f|	%-10.3f|	%-10d\n", art_getIdArticulo(pA, &flagError), art_getCodigo(pA, &flagError),
+																																		art_getNombre(pA, &flagError), art_getDescripcion(pA, &flagError),
+																																		art_getPaisFabricacion(pA, &flagError), art_getValorFob(pA, &flagError),
+																																		art_getPeso(pA, &flagError), art_getAncho(pA, &flagError),
+																																		art_getAlto(pA, &flagError), art_getProfundidad(pA, &flagError),
+																																		art_getIdPosicionArancelaria(pA, &flagError));
+						}
+					}
+				}
+			}
+		}
+	}
+	ll_deleteLinkedList(pL);
+	ll_deleteLinkedList(pLArt);
+	return ret;
 }
 
 /*
@@ -816,140 +917,37 @@ float aplicarDescuento (LinkedList* listaFiltrada, Dictionary* pArt)
 	return ret;
 }
 */
-float controller_buscarMayor (Dictionary* pArt)
-{
-	Articulos* pA;
-	LinkedList* pL;
-	float fob,max;
-	int flag;
-	float ret=-1;
 
-	if (pArt!= NULL)
-	{
-		pL = dict_getValues(pArt);
-		if (pL!=NULL)
-		{
-			for (int i=0; i<ll_len(pL); i++)
-			{
-				pA =(Articulos*)ll_get(pL, i);
-				fob = art_getValorFob(pA, &flag);
-				if (i ==0)
-					max = fob;
-				else if (fob>max)
-				{
-					max = fob;
-					ret= max;
-				}
-			}
-		}
-	}
-	printf("\nEl mayor valor fob es: %.3f", max);
-	return ret;
-}
-
-float controller_buscarMayorCostoArgMaritimo(Dictionary* pArt, Dictionary* pPosAranc, Maritimo* pTransMar)
-{
-	Articulos* pA;
-	LinkedList* pL;
-	PosArancelaria* pPA;
-	float max;
-	float ret=-1;
-	float totalCostArgMar;
-	int idPA, flag;
-	char keyPA[32];
-
-	if (pArt!= NULL && pPosAranc!=NULL && pTransMar!=NULL)
-	{
-		pL = dict_getValues(pArt);
-		if (pL!=NULL)
-		{
-			funcionImprimirProlijoCostoArgentino();
-			for (int i=0; i<ll_len(pL); i++)
-			{
-				pA =(Articulos*)ll_get(pL, i);
-				idPA = pA->idPosicionArancelaria;
-				sprintf (keyPA, "%d", idPA);
-				pPA = dict_get(pPosAranc, keyPA);
-				if (pPA!=NULL)
-				{
-					totalCostArgMar = calcularCostoArgentinoMaritimo(pPA,pA, pTransMar);
-				}
-				if (i ==0)
-					max = totalCostArgMar;
-				else if (totalCostArgMar>max)
-				{
-					max = totalCostArgMar;
-					ret= max;
-				}
-			}
-		}
-	}
-	printf("|%-10d|	%-10s|	%-10s|	%-10s|	%-10s|	%-10.2f|	%-10.2f|	%-10.2f|	%-10.2f|	%-10.2f|	%-10d|	%-10f USD\n", art_getIdArticulo(pA, &flag), art_getCodigo(pA, &flag),
-																																				art_getNombre(pA, &flag), art_getDescripcion(pA, &flag),
-																																				art_getPaisFabricacion(pA, &flag), art_getValorFob(pA, &flag),
-																																				art_getPeso(pA, &flag), art_getAncho(pA, &flag),
-																																				art_getAlto(pA, &flag), art_getProfundidad(pA, &flag),
-																																				art_getIdPosicionArancelaria(pA, &flag), max);
-	printf("\nEl mayor costo arg maritimo es: %f USD", max);
-	return ret;
-}
 /*
- * if(bufferInt<min)
-	{
-		min=bufferInt;
-	}
- * */
-
-int controller_buscarNomenclatura(Dictionary* pPosAranc, Dictionary* pArt)
+int controller_saveArticulosTextLL(char* pFile, LinkedList* articulos)
 {
 	int ret = -1;
-	PosArancelaria* pPA;
-	LinkedList* pL;
-	LinkedList* pLArt;
+	int i;
+	int flag;
+	FILE* fpArchivo;
 	Articulos* pA;
-	char nomenclatura[2000];
-	int flagError;
-	int idPA;
+	fpArchivo = fopen(pFile, "w");
 
-	if (pPosAranc!=NULL)
+	if(fpArchivo!=NULL)
 	{
-		pL = dict_getValues(pPosAranc);
-		if(utn_getTextoNumerosCaracter(nomenclatura, 2000, "\nIngrese nomenclatura", "\nError\n", 3)==0)
+		fprintf(fpArchivo,"id,codigo,nombre,descripcion,pais,valorFob,peso,ancho,alto,profundidad,idPA\n");
+		for(i=0; i<ll_len(articulos); i++)
 		{
-			for (int i=0; i<ll_len(pL); i++)
+			pA = (Articulos*) ll_get(articulos, i);
+			if(pA!=NULL)
 			{
-				pPA = ll_get(pL, i);
-				if (strcmp (pPA->nomenclaturaAranc,nomenclatura)==0)
-				{
-					funcionImprimirProlijoPosAranc();
-					printf("|%5d\t|\t%s\t|%-10.3f|\t%-5.3f\t\t|%5.3f\t\t| %s  \n", pos_getIdPosArancelaria(pPA, &flagError), pos_getNomenclatura(pPA, &flagError),
-																					pos_getSeguro(pPA, &flagError), pos_getImportacion(pPA, &flagError),
-																					pos_getTasaEstadistica(pPA, &flagError), ESTADO[pos_getTipoLicencia(pPA, &flagError)]);
-					idPA = pPA->idPosArancelaria;
-					pLArt = dict_getValues(pArt);
-					printf("\n\nARTICULOS ASOCIADOS A LA NOMENCLATURA SOLICITADA: \n\n");
-					funcionImprimirProlijoArticulos();
-					for (int j=0; j<ll_len(pLArt); j++)
-					{
-						pA = (Articulos*) ll_get(pLArt, j);
-						if (pA->idPosicionArancelaria == pPA->idPosArancelaria)
-						{
-							printf("|%-10d|	%-10s|	%-10s|	%-10s|	%-10s|	%-10f|	%-10.3f|	%-10.3f|	%-10.3f|	%-10.3f|	%-10d\n", art_getIdArticulo(pA, &flagError), art_getCodigo(pA, &flagError),
-																																		art_getNombre(pA, &flagError), art_getDescripcion(pA, &flagError),
-																																		art_getPaisFabricacion(pA, &flagError), art_getValorFob(pA, &flagError),
-																																		art_getPeso(pA, &flagError), art_getAncho(pA, &flagError),
-																																		art_getAlto(pA, &flagError), art_getProfundidad(pA, &flagError),
-																																		art_getIdPosicionArancelaria(pA, &flagError));
-						}
-					}
-				}
+				fprintf(fpArchivo, "%d,%s,%s,%s,%s,%.2f,%.2f,%.2f,%.2f,%.2f,%d\n",art_getIdArticulo(pA, &flag), art_getCodigo(pA, &flag),
+																				art_getNombre(pA, &flag), art_getDescripcion(pA, &flag),
+																				art_getPaisFabricacion(pA, &flag), art_getValorFob(pA, &flag),
+																				art_getPeso(pA, &flag), art_getAncho(pA, &flag),
+																				art_getAlto(pA, &flag), art_getProfundidad(pA, &flag),
+																				art_getIdPosicionArancelaria(pA, &flag));
+				ret =0;
 			}
 		}
+		fclose(fpArchivo);
 	}
-	ll_deleteLinkedList(pL);
-	ll_deleteLinkedList(pLArt);
 	return ret;
 }
-
-
+*/
 

@@ -6,7 +6,7 @@
  Copyright   : Your copyright notice
  Description : Hello World in C, Ansi-style
  ============================================================================
- */
+ */ // informe : descr, valor fob, valor aereo. de cada pos Aran, el mas caro aereo.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,7 +49,7 @@ int main(void) {
 							"\n\t*	7. Listar costo argentino de ambos transportes\t*"
 							"\n\t*	8. Menu de ordenamiento\t\t\t\t*"
 							"\n\t*	9. Imprimir lista filtrada con algun criterio\t*"
-							"\n\t*	10. Costo argentino maritimo mas alto\t\t*"
+							"\n\t*	10. Costo argentino aereo mas alto\t\t*"
 							"\n\t*	11. Buscar por nomenclatura\t*"
 							"\n\t*	12. Articulos con 50% descuento en precio FOB\t*"
 							"\n\t*	0. Salir\t\t\t\t\t*"
@@ -77,7 +77,7 @@ int main(void) {
 					controller_aer_editTransporteAereo(&transAereo, "TransporteAereo.csv");
 					break;
 				case 7:
-					controller_printCostoArgMaritimoAereo(articulos, posicionAranc, &transMar, &transAereo);
+					controller_printCostoArgMaritimoAereo(articulos, posicionAranc, &transMar, &transAereo, "articulos.csv");
 					break;
 				case 8:
 					controller_sort(articulos, "articulos.csv");
@@ -86,13 +86,15 @@ int main(void) {
 					controller_imprimirListaFiltradaPosAran(posicionAranc);
 					break;
 				case 10:
-					controller_buscarMayorCostoArgMaritimo(articulos, posicionAranc, &transMar);
+					controller_buscarMayorCostoArgAereo(articulos, posicionAranc, &transAereo);
 					break;
 				case 11:
 					controller_buscarNomenclatura(posicionAranc, articulos);
 					break;
 				case 12:
 					controller_imprimirListaFiltradaArticulos(articulos);
+					//controller_ordenarPorNombreCadaPosAranc(articulos, posicionAranc, &transAereo);
+
 					break;
 
 			}

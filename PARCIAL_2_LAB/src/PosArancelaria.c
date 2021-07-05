@@ -88,7 +88,7 @@ float pos_setSeguro(PosArancelaria* this, float seguro)
 float pos_getSeguro(PosArancelaria* this,int* flagError)
 {
 	*flagError = -1;
-	int aux = -1;
+	float aux = -1;
 	if(this != NULL && flagError != NULL )
 	{
 		aux=this->seguro;
@@ -98,7 +98,12 @@ float pos_getSeguro(PosArancelaria* this,int* flagError)
 }
 int isValidSeguro(float seguro)
 {
-	return 1;
+	int ret = -1;
+	if (seguro> 0 && seguro<=999999999999)
+	{
+		ret = 1;
+	}
+	return ret;
 }
 float pos_setImportacion(PosArancelaria* this, float importacion)
 {
@@ -113,7 +118,7 @@ float pos_setImportacion(PosArancelaria* this, float importacion)
 float pos_getImportacion(PosArancelaria* this,int* flagError)
 {
 	*flagError = -1;
-	int aux = -1;
+	float aux = -1;
 	if(this != NULL && flagError != NULL )
 	{
 		aux=this->importacion;
@@ -123,7 +128,12 @@ float pos_getImportacion(PosArancelaria* this,int* flagError)
 }
 int isValidImportacion(float importacion)
 {
-	return 1;
+	int ret = -1;
+	if (importacion> 0 && importacion<=999999999999)
+	{
+		ret = 1;
+	}
+	return ret;
 }
 float pos_setTasaEstadistica(PosArancelaria* this, float tasaEstadistica)
 {
@@ -138,7 +148,7 @@ float pos_setTasaEstadistica(PosArancelaria* this, float tasaEstadistica)
 float pos_getTasaEstadistica(PosArancelaria* this,int* flagError)
 {
 	*flagError = -1;
-	int aux = -1;
+	float aux = -1;
 	if(this != NULL && flagError != NULL )
 	{
 		aux=this->tasaEstadistica;
@@ -148,7 +158,12 @@ float pos_getTasaEstadistica(PosArancelaria* this,int* flagError)
 }
 int isValidTasaEstadistica(float tasaEstadistica)
 {
-	return 1;
+	int ret = -1;
+	if (tasaEstadistica> 0 && tasaEstadistica<=999999999999)
+	{
+		ret = 1;
+	}
+	return ret;
 }
 int pos_setTipoLicencia(PosArancelaria* this,int tipoLicencia)
 {

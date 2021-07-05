@@ -24,11 +24,13 @@ typedef struct
 	float profundidad;
 	int idArticulo;
 	int idPosicionArancelaria;
+	float valorAereo;
+	float valorMaritimo;
 }Articulos;
 
 Articulos* art_new(void);
 Articulos* art_newParam(char* codigo,char* descripcion,char* paisFabricacion, char* nombre, float valorFob, float peso, float ancho,
-						float alto, float profundidad, int idArticulo, int idPosicionArancelaria);
+						float alto, float profundidad, int idArticulo, int idPosicionArancelaria, float valorAereo, float valorMaritimo);
 
 int art_delete(Articulos* this);
 
@@ -77,6 +79,10 @@ int art_setIdPosicionArancelaria(Articulos* this,int idPosicionArancelaria);
 int art_getIdPosicionArancelaria(Articulos* this,int* flagError);
 int isValidIdPosicionArancelaria(int);
 
+float art_setValorAereo(Articulos* this, float valorAereo);
+float art_getValorAereo(Articulos* this,int* flagError);
+float art_setValorMaritimo(Articulos* this, float valorMaritimo);
+float art_getValorMaritimo(Articulos* this,int* flagError);
 
 
 int art_generarId(void);

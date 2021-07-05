@@ -188,7 +188,7 @@ float calcularTranspAereoPesoReal(Articulos* pArticulos, Aereo* pAereo)
 	{
 		pesoArticulo = art_getPeso(pArticulos, &flag);
 		precio = aer_getPrecioPorKg(pAereo, &flag);
-		precioPesoReal = (pesoArticulo/1000) * precio;
+		precioPesoReal = (pesoArticulo) * precio;
 		ret = precioPesoReal;
 	}
 	return ret;
